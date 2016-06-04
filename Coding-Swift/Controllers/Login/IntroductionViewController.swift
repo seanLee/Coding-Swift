@@ -11,25 +11,20 @@ import JazzHands
 import NYXImagesKit
 
 class IntroductionViewController: IFTTTAnimatedPagingScrollViewController {
-    private var iconsDict: [String : String] {
-        return ["0_image" : "intro_icon_6",
-                "1_image" : "intro_icon_0",
-                "2_image" : "intro_icon_1",
-                "3_image" : "intro_icon_2",
-                "4_image" : "intro_icon_3",
-                "5_image" : "intro_icon_4",
-                "6_image" : "intro_icon_5"]
-    }
+    private var iconsDict: [String : (String, UIImageView?)] = ["0_image" : ("intro_icon_6", nil),
+                                                                "1_image" : ("intro_icon_0", nil),
+                                                                "2_image" : ("intro_icon_1", nil),
+                                                                "3_image" : ("intro_icon_2", nil),
+                                                                "4_image" : ("intro_icon_3", nil),
+                                                                "5_image" : ("intro_icon_4", nil),
+                                                                "6_image" : ("intro_icon_5", nil)]
     
-    private var tipsDict: [String : String] {
-        return [ "1_image" : "intro_tip_0",
-                 "2_image" : "intro_tip_1",
-                 "3_image" : "intro_tip_2",
-                 "4_image" : "intro_tip_3",
-                 "5_image" : "intro_tip_4",
-                 "6_image" : "intro_tip_5"]
-    }
-    
+    private var tipsDict: [String : (String, UIImageView?)] = [ "1_image" : ("intro_icon_1", nil),
+                                                                "2_image" : ("intro_icon_2", nil),
+                                                                "3_image" : ("intro_icon_3", nil),
+                                                                "4_image" : ("intro_icon_4", nil),
+                                                                "5_image" : ("intro_icon_5", nil),
+                                                                "6_image" : ("intro_icon_6", nil)]
     private var registerBtn: UIButton!
     private var loginBtn   : UIButton!
     private var pageControl: SMPageControl!
@@ -48,6 +43,7 @@ class IntroductionViewController: IFTTTAnimatedPagingScrollViewController {
         view.backgroundColor = UIColor.colorWithHexString("0xf1f1f1");
         
         configureViews()
+        configureAnimations()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -90,6 +86,41 @@ class IntroductionViewController: IFTTTAnimatedPagingScrollViewController {
     // MARK: - views
     private func configureViews() {
         configureButtonsAndPageControl()
+        
+        var scaleFactor    : CGFloat = 1.0
+        let desginHeight   : CGFloat = 667.0
+        
+        if !(kDevice_Is_iPhone6 || kDevice_Is_iPhone6Plus) {
+            scaleFactor = kScreen_Height / desginHeight
+        }
+        
+        for index in 0..<numberOfPages {
+            let indexInt = Int(index)
+            let imageKey = imageKeyForIndex(indexInt)
+            let viewKey  = viewKeyForIndex(indexInt)
+            let iconImageName = iconsDict[imageKey]?.0
+            let tipImageName  = tipsDict[imageKey]?.0
+            
+            if let iconImageName = iconImageName {
+                let iconImage = UIImage(named: iconImageName)
+                if var iconImage = iconImage {
+                    iconImage = scaleFactor == 1.0 ? iconImage : iconImage.scaleByFactor(Float(scaleFactor))
+                    let iconView = UIImageView(image: iconImage)
+                    contentView.addSubview(iconView)
+                    iconsDict[viewKey] = (iconImageName, iconView)
+                }
+            }
+            
+            if let tipImageName = tipImageName {
+                let tipImage = UIImage(named: tipImageName)
+                if var tipImage = tipImage {
+                    tipImage = scaleFactor == 1.0 ? tipImage : tipImage.scaleByFactor(Float(scaleFactor))
+                    let tipView = UIImageView(image: tipImage)
+                    contentView.addSubview(tipView)
+                    tipsDict[viewKey] = (tipImageName, tipView)
+                }
+            }
+        }
     }
     
     private func configureButtonsAndPageControl() {
@@ -168,6 +199,18 @@ class IntroductionViewController: IFTTTAnimatedPagingScrollViewController {
             make.size.equalTo(CGSizeMake(kScreen_Width, kScaleFrom_iPhone5_Desgin(20.0)))
             make.centerX.equalTo(view)
             make.bottom.equalTo(registerBtn.snp_top).offset(-kScaleFrom_iPhone5_Desgin(20.0))
+        }
+    }
+    
+    // MARK: - Animation
+    private func configureAnimations() {
+        configureTipAndTitleViewAnimations()
+    }
+    
+    private func configureTipAndTitleViewAnimations() {
+        for index in 0..<numberOfPages {
+            let indexInt = Int(index)
+            
         }
     }
     
