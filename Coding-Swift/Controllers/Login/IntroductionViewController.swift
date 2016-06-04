@@ -144,7 +144,7 @@ class IntroductionViewController: IFTTTAnimatedPagingScrollViewController {
         var pageIndicatorImage = UIImage(named: "intro_dot_unselected")
         var currentPageIndicatorImage = UIImage(named: "intro_dot_selected")
         
-        if !(kDevice_Is_iPhone6 && kDevice_Is_iPhone6Plus) {
+        if !(kDevice_Is_iPhone6 || kDevice_Is_iPhone6Plus) {
             let desginWidth: CGFloat = 375.0
             let scaleFactor = kScreen_Width / desginWidth
             pageIndicatorImage = pageIndicatorImage?.scaleByFactor(Float(scaleFactor))
@@ -155,7 +155,6 @@ class IntroductionViewController: IFTTTAnimatedPagingScrollViewController {
             let control = SMPageControl()
             control.numberOfPages = Int(self.numberOfPages)
             control.currentPage = 0
-            control.backgroundColor = UIColor.redColor()
             control.userInteractionEnabled = false
             control.pageIndicatorImage = pageIndicatorImage
             control.currentPageIndicatorImage = currentPageIndicatorImage

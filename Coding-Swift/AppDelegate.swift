@@ -27,9 +27,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NetworkActivityIndicatorManager.sharedManager.isEnabled = true;
         
         //AlamofireImage加载数据类型
-        let pageController = SMPageControl()
-        pageController.indicatorDiameter = 10
-        pageController.indicatorDiameter = 10
         
         //customizeInterface
         customizeInterface()

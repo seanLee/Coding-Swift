@@ -385,7 +385,7 @@ class SMPageControl: UIControl {
         var left: CGFloat = 0.0
         switch alignment {
         case .SMPageControlAlignmentCenter:
-            left = ceil(CGRectGetMinX(rect) - (size.width / 2.0))
+            left = ceil(CGRectGetMidX(rect) - (size.width / 2.0))
         case .SMPageControlAlignmentRight:
             left = CGRectGetMaxX(rect) - size.width
         default:

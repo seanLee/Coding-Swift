@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		80322A558900C93EAABD4E6B /* Pods_Coding_Swift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E885655812CF8DC35D4818D /* Pods_Coding_Swift.framework */; };
+		AD0639E21D029E9100006303 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = AD0639E11D029E9100006303 /* Launch Screen.xib */; };
 		AD27ACA81D0150A700B52C38 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD27AA571D0150A600B52C38 /* AppDelegate.swift */; };
 		AD27ACA91D0150A700B52C38 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD27AA581D0150A600B52C38 /* Assets.xcassets */; };
 		AD27ACAA1D0150A700B52C38 /* IntroductionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD27AA5C1D0150A600B52C38 /* IntroductionViewController.swift */; };
@@ -546,6 +547,7 @@
 /* Begin PBXFileReference section */
 		33DB30381FFDD1C3633AB766 /* Pods-Coding-Swift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Coding-Swift.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Coding-Swift/Pods-Coding-Swift.debug.xcconfig"; sourceTree = "<group>"; };
 		7E885655812CF8DC35D4818D /* Pods_Coding_Swift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Coding_Swift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AD0639E11D029E9100006303 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		AD27AA411D014FF300B52C38 /* Coding-Swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Coding-Swift.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD27AA571D0150A600B52C38 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AD27AA581D0150A600B52C38 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -1142,6 +1144,7 @@
 				AD27AA591D0150A600B52C38 /* BridgeHeader.h */,
 				AD27AA611D0150A600B52C38 /* GlobalDefine.swift */,
 				AD27AC821D0150A700B52C38 /* Info.plist */,
+				AD0639E11D029E9100006303 /* Launch Screen.xib */,
 				AD27AA581D0150A600B52C38 /* Assets.xcassets */,
 				AD27AA5A1D0150A600B52C38 /* Controllers */,
 				AD27AA621D0150A600B52C38 /* Images */,
@@ -2354,6 +2357,7 @@
 				AD27AD241D0150A700B52C38 /* file_changeType_RENAME@2x.png in Resources */,
 				AD27ADD51D0150A700B52C38 /* tweetBtn_Nav@2x.png in Resources */,
 				AD27ADAA1D0150A700B52C38 /* member_type_100@3x.png in Resources */,
+				AD0639E21D029E9100006303 /* Launch Screen.xib in Resources */,
 				AD27AD5F1D0150A700B52C38 /* AppIcon120x120.png in Resources */,
 				AD27AE091D0150A700B52C38 /* register_step_un@2x.png in Resources */,
 				AD27AE071D0150A700B52C38 /* register_step_ed@2x.png in Resources */,
@@ -2875,6 +2879,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "leisu.com.Coding-Swift";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/Coding-Swift/BridgeHeader.h";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -2890,6 +2895,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "leisu.com.Coding-Swift";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/Coding-Swift/BridgeHeader.h";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
