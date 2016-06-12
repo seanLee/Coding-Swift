@@ -210,7 +210,20 @@ class IntroductionViewController: IFTTTAnimatedPagingScrollViewController {
     private func configureTipAndTitleViewAnimations() {
         for index in 0..<numberOfPages {
             let indexInt = Int(index)
-            
+            let viewKey = viewKeyForIndex(indexInt)
+            let iconView = iconsDict[viewKey]?.1
+            let tipView = tipsDict[viewKey]?.1
+            if let iconView = iconView {
+                if indexInt == 0 {
+                    keepView(iconView, onPages: [indexInt+1, indexInt], atTimes: [indexInt-1, indexInt])
+                    
+                    iconView.snp_makeConstraints(closure: { (make) in
+                        make.top.equalTo(kScreen_Height / 7.0)
+                    })
+                } else {
+                    
+                }
+            }
         }
     }
     
