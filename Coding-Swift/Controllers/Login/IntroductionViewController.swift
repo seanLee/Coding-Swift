@@ -19,12 +19,12 @@ class IntroductionViewController: IFTTTAnimatedPagingScrollViewController {
                                                                 "5_image" : ("intro_icon_4", nil),
                                                                 "6_image" : ("intro_icon_5", nil)]
     
-    private var tipsDict: [String : (String, UIImageView?)] = [ "1_image" : ("intro_icon_1", nil),
-                                                                "2_image" : ("intro_icon_2", nil),
-                                                                "3_image" : ("intro_icon_3", nil),
-                                                                "4_image" : ("intro_icon_4", nil),
-                                                                "5_image" : ("intro_icon_5", nil),
-                                                                "6_image" : ("intro_icon_6", nil)]
+    private var tipsDict: [String : (String, UIImageView?)] = [ "1_image" : ("intro_tip_0", nil),
+                                                                "2_image" : ("intro_tip_1", nil),
+                                                                "3_image" : ("intro_tip_2", nil),
+                                                                "4_image" : ("intro_tip_3", nil),
+                                                                "5_image" : ("intro_tip_4", nil),
+                                                                "6_image" : ("intro_tip_5", nil)]
     private var registerBtn: UIButton!
     private var loginBtn   : UIButton!
     private var pageControl: SMPageControl!
@@ -71,7 +71,10 @@ class IntroductionViewController: IFTTTAnimatedPagingScrollViewController {
     
     // MARK: - super
     override func scrollViewDidScroll(scrollView: UIScrollView) {
+        animateCurrentFrame()
         
+        let nearestPage = floor(pageOffset() + 0.5)
+        pageControl.currentPage = Int(nearestPage)
     }
     
     // MARK: - function
@@ -221,8 +224,31 @@ class IntroductionViewController: IFTTTAnimatedPagingScrollViewController {
                         make.top.equalTo(kScreen_Height / 7.0)
                     })
                 } else {
+                    keepView(iconView, onPage: CGFloat(indexInt))
                     
+                    iconView.snp_makeConstraints(closure: { (make) in
+                        make.centerY.equalTo(-kScreen_Height / 6.0)
+                    })
                 }
+                let iconAlphaAnimation = IFTTTAlphaAnimation(view: iconView)
+                iconAlphaAnimation.addKeyframeForTime(CGFloat(indexInt) - 0.5, alpha: 0.0)
+                iconAlphaAnimation.addKeyframeForTime(CGFloat(indexInt), alpha: 1.0)
+                iconAlphaAnimation.addKeyframeForTime(CGFloat(indexInt) + 0.5, alpha: 0.0)
+                animator.addAnimation(iconAlphaAnimation)
+            }
+            
+            if let tipView = tipView {
+                keepView(tipView, onPages: [indexInt+1, indexInt, indexInt-1], atTimes: [indexInt-1, indexInt, indexInt+1])
+                
+                let iconAlphaAnimation = IFTTTAlphaAnimation(view: tipView)
+                iconAlphaAnimation.addKeyframeForTime(CGFloat(indexInt) - 0.5, alpha: 0.0)
+                iconAlphaAnimation.addKeyframeForTime(CGFloat(indexInt), alpha: 1.0)
+                iconAlphaAnimation.addKeyframeForTime(CGFloat(indexInt) + 0.5, alpha: 0.0)
+                animator.addAnimation(iconAlphaAnimation)
+                
+                tipView.snp_makeConstraints(closure: { (make) in
+                    make.top.equalTo(iconView!.snp_bottom).offset(kScaleFrom_iPhone5_Desgin(45.0))
+                })
             }
         }
     }
