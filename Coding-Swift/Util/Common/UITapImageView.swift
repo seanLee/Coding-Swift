@@ -9,8 +9,7 @@
 import UIKit
 
 class UITapImageView: UIImageView {
-    private typealias TapAction = AnyObject -> Void
-    private var tapBlock: TapAction?
+    private var tapBlock: (AnyObject -> Void)?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
