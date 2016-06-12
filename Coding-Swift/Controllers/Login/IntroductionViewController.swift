@@ -54,7 +54,7 @@ class IntroductionViewController: IFTTTAnimatedPagingScrollViewController {
     
     // MARK: - Orientations
     override func shouldAutorotate() -> Bool {
-        return UIInterfaceOrientationIsLandscape(UIApplication.sharedApplication().statusBarOrientation)
+        return UIInterfaceOrientationIsLandscape(kScreenOrientation)
     }
     
     override func preferredInterfaceOrientationForPresentation() -> UIInterfaceOrientation {
@@ -259,6 +259,11 @@ class IntroductionViewController: IFTTTAnimatedPagingScrollViewController {
     }
     
     func loginBtnClicked(sender: UIButton) {
+        let vc = LoginViewController()
+        vc.showDismissButton = true
         
+        let nav = BaseNavigationController(rootViewController: vc)
+        
+        presentViewController(nav, animated: true, completion: nil)
     }
 }

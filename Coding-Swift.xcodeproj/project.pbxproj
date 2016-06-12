@@ -542,6 +542,10 @@
 		AD27AEBC1D0150A700B52C38 /* SMPageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD27ACA51D0150A700B52C38 /* SMPageControl.swift */; };
 		AD27AEBD1D0150A700B52C38 /* EaseStartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD27ACA71D0150A700B52C38 /* EaseStartView.swift */; };
 		AD27AEC11D0153ED00B52C38 /* String + Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD27AEC01D0153ED00B52C38 /* String + Common.swift */; };
+		ADD8818D1D0D133D0008B32E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD8818C1D0D133D0008B32E /* LoginViewController.swift */; };
+		ADD881901D0D14D60008B32E /* Input_OnlyText_Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD8818F1D0D14D60008B32E /* Input_OnlyText_Cell.swift */; };
+		ADD881931D0D163B0008B32E /* UITapImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD881921D0D163B0008B32E /* UITapImageView.swift */; };
+		ADD881951D0D1D450008B32E /* PhoneCodeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD881941D0D1D450008B32E /* PhoneCodeButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1087,6 +1091,10 @@
 		AD27ACA51D0150A700B52C38 /* SMPageControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SMPageControl.swift; sourceTree = "<group>"; };
 		AD27ACA71D0150A700B52C38 /* EaseStartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EaseStartView.swift; sourceTree = "<group>"; };
 		AD27AEC01D0153ED00B52C38 /* String + Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String + Common.swift"; sourceTree = "<group>"; };
+		ADD8818C1D0D133D0008B32E /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		ADD8818F1D0D14D60008B32E /* Input_OnlyText_Cell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Input_OnlyText_Cell.swift; sourceTree = "<group>"; };
+		ADD881921D0D163B0008B32E /* UITapImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITapImageView.swift; sourceTree = "<group>"; };
+		ADD881941D0D1D450008B32E /* PhoneCodeButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneCodeButton.swift; sourceTree = "<group>"; };
 		D046B49F6DFE57C6CB0B9B7C /* Pods-Coding-Swift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Coding-Swift.release.xcconfig"; path = "Pods/Target Support Files/Pods-Coding-Swift/Pods-Coding-Swift.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1169,6 +1177,7 @@
 			isa = PBXGroup;
 			children = (
 				AD27AA5C1D0150A600B52C38 /* IntroductionViewController.swift */,
+				ADD8818C1D0D133D0008B32E /* LoginViewController.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -2032,6 +2041,7 @@
 		AD27AC861D0150A700B52C38 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				ADD881911D0D15C80008B32E /* Common */,
 				AD27AC871D0150A700B52C38 /* Category */,
 				AD27AC921D0150A700B52C38 /* Manager */,
 			);
@@ -2118,9 +2128,27 @@
 		AD27ACA61D0150A700B52C38 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				ADD8818E1D0D144A0008B32E /* Cell */,
 				AD27ACA71D0150A700B52C38 /* EaseStartView.swift */,
+				ADD881941D0D1D450008B32E /* PhoneCodeButton.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		ADD8818E1D0D144A0008B32E /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				ADD8818F1D0D14D60008B32E /* Input_OnlyText_Cell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		ADD881911D0D15C80008B32E /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				ADD881921D0D163B0008B32E /* UITapImageView.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2750,16 +2778,20 @@
 				AD27AEA61D0150A700B52C38 /* Login.swift in Sources */,
 				AD27AEB71D0150A700B52C38 /* EAIntroView.swift in Sources */,
 				AD27AEB11D0150A700B52C38 /* UIViewController+Swizzle.swift in Sources */,
+				ADD881951D0D1D450008B32E /* PhoneCodeButton.swift in Sources */,
+				ADD881931D0D163B0008B32E /* UITapImageView.swift in Sources */,
 				AD27AEAB1D0150A700B52C38 /* NSURL+Common.swift in Sources */,
 				AD27AEAE1D0150A700B52C38 /* UIImage+Common.swift in Sources */,
 				AD27AEB31D0150A700B52C38 /* FunctionTipsManager.swift in Sources */,
 				AD27ACAA1D0150A700B52C38 /* IntroductionViewController.swift in Sources */,
 				AD27AEB41D0150A700B52C38 /* NetAPIClient.swift in Sources */,
 				AD27AEB51D0150A700B52C38 /* StartImagesManager.swift in Sources */,
+				ADD881901D0D14D60008B32E /* Input_OnlyText_Cell.swift in Sources */,
 				AD27AEB01D0150A700B52C38 /* UIView+Frame.swift in Sources */,
 				AD27AEAD1D0150A700B52C38 /* UIColor+Expanded.swift in Sources */,
 				AD27AEC11D0153ED00B52C38 /* String + Common.swift in Sources */,
 				AD27AEB91D0150A700B52C38 /* JDStatusBarNotification.m in Sources */,
+				ADD8818D1D0D133D0008B32E /* LoginViewController.swift in Sources */,
 				AD27AEA91D0150A700B52C38 /* NSObject+Common.swift in Sources */,
 				AD27ACAC1D0150A700B52C38 /* BaseViewController.swift in Sources */,
 				AD27AEBA1D0150A700B52C38 /* JDStatusBarStyle.m in Sources */,

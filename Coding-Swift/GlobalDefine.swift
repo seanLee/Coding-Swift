@@ -22,11 +22,19 @@ let kFunctionTipStr_Prefix = "Prefix"
 let kNavTitleFontSize = 18.0
 let kBackButtonFontSize = 16.0
 
+// MARK: - Main Color
+let kColorTableBG           = UIColor.colorWithHexString("0xfafafa")
+let kColor999               = UIColor.colorWithHexString("0x999999")
+let kColorTableSectionBg    = UIColor.colorWithHexString("0xeeeeee");
+
 // MARK: - Window
 let kKeyWindow      = UIApplication.sharedApplication().keyWindow
 let kScreen_Bounds  = UIScreen.mainScreen().bounds
 let kScreen_Height  = kScreen_Bounds.height
 let kScreen_Width   = kScreen_Bounds.width
+
+// MARK: - Orientations
+let kScreenOrientation = UIApplication.sharedApplication().statusBarOrientation
 
 func kScaleFrom_iPhone5_Desgin(origin: CGFloat) -> CGFloat {
     return (kScreen_Width / 320.0) * origin

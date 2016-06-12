@@ -14,6 +14,18 @@ class BaseViewController: UIViewController {
         super.viewWillAppear(animated)
         
         UIApplication.sharedApplication().setStatusBarStyle(.LightContent, animated: true)
+        
+        if kScreenOrientation != .Portrait && (supportedInterfaceOrientations().rawValue & UIInterfaceOrientationMask.LandscapeLeft.rawValue) == 0 {
+            forceChangeToOrientation(.Portrait)
+        }
+    }
+    
+    override func viewDidLoad() {
+        view.backgroundColor = kColorTableBG
+        
+        if kScreenOrientation != .Portrait && (supportedInterfaceOrientations().rawValue & UIInterfaceOrientationMask.LandscapeLeft.rawValue) == 0 {
+            forceChangeToOrientation(.Portrait)
+        }
     }
     
     class func presentingVC() -> UIViewController? {
@@ -42,5 +54,22 @@ class BaseViewController: UIViewController {
         }
         
         return result
+    }
+    
+    // MARK: - Orientations
+    override func shouldAutorotate() -> Bool {
+        return UIInterfaceOrientationIsLandscape(kScreenOrientation)
+    }
+    
+    override func preferredInterfaceOrientationForPresentation() -> UIInterfaceOrientation {
+        return .Portrait
+    }
+    
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return .Portrait
+    }
+    
+    func forceChangeToOrientation(interfaceOrientation: UIInterfaceOrientation) {
+        UIDevice.currentDevice().setValue(NSNumber(integer: interfaceOrientation.rawValue), forKey: "orientation")
     }
 }
