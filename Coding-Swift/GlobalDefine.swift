@@ -9,7 +9,7 @@
 import UIKit
 
 // MARK: - BaseUrl
-let baseUrl = "https://raw.githubusercontent.com"
+let baseUrl = "https://coding.net/"
 
 //版本号
 let kVersion_Coding = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString")
@@ -32,6 +32,8 @@ let kKeyWindow      = UIApplication.sharedApplication().keyWindow
 let kScreen_Bounds  = UIScreen.mainScreen().bounds
 let kScreen_Height  = kScreen_Bounds.height
 let kScreen_Width   = kScreen_Bounds.width
+let kPaddingLeftWidth     : CGFloat = 15.0
+let kLoginPaddingLeftWidth: CGFloat = 18.0
 
 // MARK: - Orientations
 let kScreenOrientation = UIApplication.sharedApplication().statusBarOrientation

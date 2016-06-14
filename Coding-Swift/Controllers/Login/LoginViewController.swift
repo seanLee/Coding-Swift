@@ -21,8 +21,6 @@ class LoginViewController: BaseViewController {
         button.frame = CGRectMake(0, 0, 100.0, 32.0)
         button.center = CGPointMake(kScreen_Width/2.0, kScreen_Height/2.0)
         view.addSubview(button)
-        
-        print(Input_OnlyText_Cell().textField)
     }
 
     override func didReceiveMemoryWarning() {

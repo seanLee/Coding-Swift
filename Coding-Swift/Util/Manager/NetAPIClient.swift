@@ -53,7 +53,6 @@ enum RequestMethod {
 }
 
 struct Router: URLRequestConvertible {
-    static let baseURLString = "https://coding.net/"
     static var OAuthToken: String?
     
     var requestMethod: RequestMethod
@@ -86,7 +85,7 @@ struct Router: URLRequestConvertible {
     
     // MARK: URLRequestConvertible
     var URLRequest: NSMutableURLRequest {
-        let URL = NSURL(string: Router.baseURLString)!
+        let URL = NSURL(string: baseUrl)!
         let mutableURLRequest = NSMutableURLRequest(URL: URL.URLByAppendingPathComponent(path))
         mutableURLRequest.HTTPMethod = self.method.rawValue
         
