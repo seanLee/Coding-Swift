@@ -58,16 +58,18 @@ class Input_OnlyText_Cell: UITableViewCell {
         return label
     }()
     
-    private var lineView: UIView = {
-        let view = UIView()
-        
-        return view
+    private lazy var clearBtn: UIButton = {
+        let btn = UIButton()
+        btn.contentHorizontalAlignment = .Right
+        btn.setImage(UIImage(named: "text_clear_btn"), forState: .Normal)
+        btn.addTarget(self, action: #selector(clearBtnClicked(_:)), forControlEvents: .TouchUpInside)
+        return btn
     }()
     
-    private var clearBtn: UIButton = {
-        let btn = UIButton()
-        
-        return btn
+    private var lineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.colorWithHexString("0xffffff").colorWithAlphaComponent(0.5)
+        return view
     }()
     
     // MARK: -
@@ -177,13 +179,54 @@ class Input_OnlyText_Cell: UITableViewCell {
         super.layoutSubviews()
         
         if isForLoginVC {
+            contentView.addSubview(clearBtn)
+            clearBtn.snp_makeConstraints(closure: { (make) in
+                make.width.height.equalTo(30.0)
+                make.centerY.equalTo(contentView)
+                make.right.equalTo(contentView).offset(-kLoginPaddingLeftWidth)
+            })
             
+            contentView.addSubview(lineView)
+            lineView.snp_makeConstraints(closure: { (make) in
+                make.height.equalTo(0.5)
+                make.left.equalTo(contentView).offset(kLoginPaddingLeftWidth)
+                make.right.equalTo(contentView).offset(-kLoginPaddingLeftWidth)
+                make.bottom.equalTo(contentView)
+            })
         }
         
         backgroundColor = isForLoginVC ? UIColor.clearColor() : UIColor.whiteColor()
         textField.clearButtonMode = isForLoginVC ? .Never : .WhileEditing
         textField.textColor = isForLoginVC ? UIColor.whiteColor() : UIColor.colorWithHexString("0x222222")
+        lineView.hidden = !isForLoginVC
+        clearBtn.hidden = true
         
+        var rightElement: UIView?
+        if reuseIdentifier == Input_OnlyText_Cell.kCellIdentifier_Input_OnlyText_Cell_Text {
+            rightElement = nil
+        } else if reuseIdentifier == Input_OnlyText_Cell.kCellIdentifier_Input_OnlyText_Cell_Captcha {
+            rightElement = captchaView
+        } else if reuseIdentifier == Input_OnlyText_Cell.kCellIdentifier_Input_OnlyText_Cell_Password {
+            rightElement = passwordBtn
+        } else if reuseIdentifier == Input_OnlyText_Cell.kCellIdentifier_Input_OnlyText_Cell_PhoneCode_Prefix {
+            rightElement = verify_codeBtn
+        }
+        
+        var offset: CGFloat = 0
+        if let rightElement = rightElement {
+            offset = CGRectGetMinY(rightElement.frame) - kScreen_Width - 10.0
+        } else {
+            offset = -kLoginPaddingLeftWidth
+        }
+        
+        clearBtn.snp_remakeConstraints { (make) in
+            make.right.equalTo(contentView).offset(offset)
+        }
+        
+        textField.snp_remakeConstraints { (make) in
+            offset = offset - (self.isForLoginVC ? 30.0 : 0)
+            make.right.equalTo(contentView).offset(offset)
+        }
     }
     
     // MARK: - TextField

@@ -542,6 +542,8 @@
 		AD27AEBC1D0150A700B52C38 /* SMPageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD27ACA51D0150A700B52C38 /* SMPageControl.swift */; };
 		AD27AEBD1D0150A700B52C38 /* EaseStartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD27ACA71D0150A700B52C38 /* EaseStartView.swift */; };
 		AD27AEC11D0153ED00B52C38 /* String + Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD27AEC01D0153ED00B52C38 /* String + Common.swift */; };
+		AD29FC7C1D10F55000AF1FC4 /* UIImage+BlurredFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD29FC7A1D10F55000AF1FC4 /* UIImage+BlurredFrame.swift */; };
+		AD29FC7D1D10F55000AF1FC4 /* UIImage+ImageEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD29FC7B1D10F55000AF1FC4 /* UIImage+ImageEffects.swift */; };
 		ADD8818D1D0D133D0008B32E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD8818C1D0D133D0008B32E /* LoginViewController.swift */; };
 		ADD881901D0D14D60008B32E /* Input_OnlyText_Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD8818F1D0D14D60008B32E /* Input_OnlyText_Cell.swift */; };
 		ADD881931D0D163B0008B32E /* UITapImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD881921D0D163B0008B32E /* UITapImageView.swift */; };
@@ -1091,6 +1093,8 @@
 		AD27ACA51D0150A700B52C38 /* SMPageControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SMPageControl.swift; sourceTree = "<group>"; };
 		AD27ACA71D0150A700B52C38 /* EaseStartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EaseStartView.swift; sourceTree = "<group>"; };
 		AD27AEC01D0153ED00B52C38 /* String + Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String + Common.swift"; sourceTree = "<group>"; };
+		AD29FC7A1D10F55000AF1FC4 /* UIImage+BlurredFrame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+BlurredFrame.swift"; sourceTree = "<group>"; };
+		AD29FC7B1D10F55000AF1FC4 /* UIImage+ImageEffects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+ImageEffects.swift"; sourceTree = "<group>"; };
 		ADD8818C1D0D133D0008B32E /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		ADD8818F1D0D14D60008B32E /* Input_OnlyText_Cell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Input_OnlyText_Cell.swift; sourceTree = "<group>"; };
 		ADD881921D0D163B0008B32E /* UITapImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITapImageView.swift; sourceTree = "<group>"; };
@@ -2051,6 +2055,7 @@
 		AD27AC871D0150A700B52C38 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				AD29FC791D10F4BD00AF1FC4 /* UIImage+BlurredFrame */,
 				AD27AC881D0150A700B52C38 /* NSDate+Helper.swift */,
 				AD27AC891D0150A700B52C38 /* NSObject+Common.swift */,
 				AD27AC8A1D0150A700B52C38 /* NSObject+Swizzle.swift */,
@@ -2135,6 +2140,15 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		AD29FC791D10F4BD00AF1FC4 /* UIImage+BlurredFrame */ = {
+			isa = PBXGroup;
+			children = (
+				AD29FC7A1D10F55000AF1FC4 /* UIImage+BlurredFrame.swift */,
+				AD29FC7B1D10F55000AF1FC4 /* UIImage+ImageEffects.swift */,
+			);
+			path = "UIImage+BlurredFrame";
+			sourceTree = "<group>";
+		};
 		ADD8818E1D0D144A0008B32E /* Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -2158,12 +2172,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = AD27AA531D014FF300B52C38 /* Build configuration list for PBXNativeTarget "Coding-Swift" */;
 			buildPhases = (
-				012BC8C6E449DD27A68AC8E7 /* 📦 Check Pods Manifest.lock */,
+				012BC8C6E449DD27A68AC8E7 /* [CP] Check Pods Manifest.lock */,
 				AD27AA3D1D014FF300B52C38 /* Sources */,
 				AD27AA3E1D014FF300B52C38 /* Frameworks */,
 				AD27AA3F1D014FF300B52C38 /* Resources */,
-				E2717F2C5AA2A65BCAB0C699 /* 📦 Embed Pods Frameworks */,
-				A4A2FBFA2636ED842829652F /* 📦 Copy Pods Resources */,
+				E2717F2C5AA2A65BCAB0C699 /* [CP] Embed Pods Frameworks */,
+				A4A2FBFA2636ED842829652F /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2723,14 +2737,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		012BC8C6E449DD27A68AC8E7 /* 📦 Check Pods Manifest.lock */ = {
+		012BC8C6E449DD27A68AC8E7 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2738,14 +2752,14 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		A4A2FBFA2636ED842829652F /* 📦 Copy Pods Resources */ = {
+		A4A2FBFA2636ED842829652F /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2753,14 +2767,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Coding-Swift/Pods-Coding-Swift-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E2717F2C5AA2A65BCAB0C699 /* 📦 Embed Pods Frameworks */ = {
+		E2717F2C5AA2A65BCAB0C699 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2776,12 +2790,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				AD27AEA61D0150A700B52C38 /* Login.swift in Sources */,
+				AD29FC7C1D10F55000AF1FC4 /* UIImage+BlurredFrame.swift in Sources */,
 				AD27AEB71D0150A700B52C38 /* EAIntroView.swift in Sources */,
 				AD27AEB11D0150A700B52C38 /* UIViewController+Swizzle.swift in Sources */,
 				ADD881951D0D1D450008B32E /* PhoneCodeButton.swift in Sources */,
 				ADD881931D0D163B0008B32E /* UITapImageView.swift in Sources */,
 				AD27AEAB1D0150A700B52C38 /* NSURL+Common.swift in Sources */,
 				AD27AEAE1D0150A700B52C38 /* UIImage+Common.swift in Sources */,
+				AD29FC7D1D10F55000AF1FC4 /* UIImage+ImageEffects.swift in Sources */,
 				AD27AEB31D0150A700B52C38 /* FunctionTipsManager.swift in Sources */,
 				AD27ACAA1D0150A700B52C38 /* IntroductionViewController.swift in Sources */,
 				AD27AEB41D0150A700B52C38 /* NetAPIClient.swift in Sources */,
