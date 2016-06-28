@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import 
+import ObjectMapper
 
 private let kLoginStatus = "login_status"
 private let kLoginPreUserEmail = "pre_user_email"
@@ -58,6 +58,15 @@ class Login: NSObject {
     }
     
     // MARK: - Authority
+    class var curLoginUser: User? {
+        if let user = _user {
+            return user
+        }
+        let loginData = NSUserDefaults.standardUserDefaults().objectForKey(kLoginUserDict)
+        _user = Mapper<User>().map(loginData)
+        return _user
+    }
+    
     static var isLogin: Bool {
         let loginStatus = NSUserDefaults.standardUserDefaults().objectForKey(kLoginStatus)
         if let loginStatus = loginStatus,
@@ -72,18 +81,55 @@ class Login: NSObject {
         return false
     }
     
-    class func doLogin(loginData: [String : String]?) {
+    class func doLogin(loginData: [String : AnyObject]?) {
         if let loginData = loginData {
             let defaults = NSUserDefaults.standardUserDefaults()
             defaults.setObject(NSNumber(bool: true), forKey: kLoginStatus)
             defaults.setObject(loginData, forKey: kLoginUserDict)
-            curLoginUser = Mapper<StartImage>
-        } else {
+            _user = Mapper<User>().map(loginData)
+            defaults.synchronize()
             
+            saveLoginData(loginData)
+        } else {
+            doLogout()
         }
     }
     
-    class var curLoginUser: User? {
-        return User()
+    class func readLoginDataList() -> NSMutableDictionary {
+        var loginDataList = NSMutableDictionary(contentsOfFile: loginDataListPath())
+        if loginDataList == nil {
+            loginDataList = NSMutableDictionary()
+        }
+        return loginDataList!
+    }
+    
+    class func saveLoginData(loginData: [String: AnyObject]) -> Bool {
+        let saved: Bool = false
+        
+        
+        return saved
+    }
+    
+    private class func loginDataListPath() -> String {
+        let documentPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first! as NSString
+        return documentPath.stringByAppendingPathComponent(kLoginDataListPath)
+    }
+    
+    class func doLogout() {
+        
+    }
+    
+    class func setPreUserEmail(emailStr: String) {
+        if emailStr.length <= 0 {
+            return
+        }
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.setObject(emailStr, forKey: kLoginPreUserEmail)
+        defaults.synchronize()
+    }
+    
+    class func preUserEmail() -> String? {
+        let defauls = NSUserDefaults.standardUserDefaults()
+        return defauls.objectForKey(kLoginPreUserEmail) as? String
     }
 }

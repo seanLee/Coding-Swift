@@ -11,10 +11,12 @@ pod 'Alamofire', '~> 3.3.1'
 pod 'AlamofireImage', '~> 2.0'
 pod 'AlamofireNetworkActivityIndicator', '~> 1.0'
 pod 'ObjectMapper', '~> 1.2.0'
+pod 'RazzleDazzle', '~> 0.1.2'
 
 pod 'hpple', '0.2.0'
+pod 'TPKeyboardAvoiding', '~> 1.3'
 pod 'RDVTabBarController', '~> 1.1.9'
 pod 'MBProgressHUD', '0.9'
 pod 'NYXImagesKit', '2.3'
-pod 'JazzHands', '2.0.0'
+#pod 'JazzHands', '2.0.0'
 end

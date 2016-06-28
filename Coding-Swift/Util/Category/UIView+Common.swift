@@ -40,4 +40,28 @@ extension UIView {
     func doubleSizeOfFrame() -> CGSize {
         return CGSize(width: self.width*2, height: self.height*2)
     }
+    
+    func addGradientLayerWithColors(cgColorArray: [CGColorRef]) {
+        addGradientLayerWithColors(cgColorArray, locations: nil, startPoint: CGPoint(x: 0.0, y: 0.5), endPoint: CGPoint(x: 1.0, y: 0.5))
+    }
+    
+    func addGradientLayerWithColors(cgColorArray: [CGColorRef], locations: [CGFloat]?, startPoint: CGPoint, endPoint: CGPoint) {
+        let layer = CAGradientLayer()
+        layer.frame = self.bounds
+        //config the params
+        guard cgColorArray.count > 0 else {
+            return
+        }
+        
+        layer.colors = cgColorArray
+        
+        if let locations = locations {
+            if locations.count == cgColorArray.count {
+                layer.locations = locations
+            }
+        }
+        layer.startPoint = startPoint
+        layer.endPoint = endPoint
+        layer.addSublayer(layer)
+    }
 }

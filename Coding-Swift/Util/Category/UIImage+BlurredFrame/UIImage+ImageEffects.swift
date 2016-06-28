@@ -55,9 +55,10 @@ extension UIImage {
             return nil
         }
         
-        guard maskImage?.CGImage != nil else {
-            print("error: maskImage must be backed by a CGImage")
-            return nil
+        if let maskImage = maskImage,
+            let _ = maskImage.CGImage {
+            print("*** error: maskImage must be backed by a CGImage: %@", maskImage);
+            return nil;
         }
         
         let imageRect = CGRect(origin: CGPointZero, size: self.size)
@@ -99,14 +100,14 @@ extension UIImage {
             var effectImageBuffersAreSwapped = false
             if hasStaturationChange {
                 let s = saturationDeltaFactor
-                let floatingPointSaturationMatrix = [
+                let floatingPointSaturationMatrix: [CGFloat] = [
                     0.0722 + 0.9278 * s,  0.0722 - 0.0722 * s,  0.0722 - 0.0722 * s,  0,
                     0.7152 - 0.7152 * s,  0.7152 + 0.2848 * s,  0.7152 - 0.7152 * s,  0,
                     0.2126 - 0.2126 * s,  0.2126 - 0.2126 * s,  0.2126 + 0.7873 * s,  0,
-                    0,                    0,                    0,  1,
+                                        0,                  0,                    0,  1,
                     ]
                 let divisor: Int32 = 256
-                let matrixSize = sizeofValue(floatingPointSaturationMatrix) / sizeofValue(floatingPointSaturationMatrix[0])
+                let matrixSize = strideofValue(floatingPointSaturationMatrix) / strideofValue(floatingPointSaturationMatrix[0])
                 var saturationMatrix = [Int16]()
                 for index in 0..<matrixSize {
                     saturationMatrix[index] = Int16(round(floatingPointSaturationMatrix[index] * CGFloat(divisor)))

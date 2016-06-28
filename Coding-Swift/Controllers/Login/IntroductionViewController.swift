@@ -7,10 +7,10 @@
 //
 
 import UIKit
-import JazzHands
+import RazzleDazzle
 import NYXImagesKit
 
-class IntroductionViewController: IFTTTAnimatedPagingScrollViewController {
+class IntroductionViewController: AnimatedPagingScrollViewController {
     private var iconsDict: [String : (String, UIImageView?)] = ["0_image" : ("intro_icon_6", nil),
                                                                 "1_image" : ("intro_icon_0", nil),
                                                                 "2_image" : ("intro_icon_1", nil),
@@ -28,9 +28,13 @@ class IntroductionViewController: IFTTTAnimatedPagingScrollViewController {
     private var registerBtn: UIButton!
     private var loginBtn   : UIButton!
     private var pageControl: SMPageControl!
+    
+    override func numberOfPages() -> Int {
+        return 7;
+    }
+    
     init() {
         super.init(nibName: nil, bundle: nil)
-        numberOfPages = 7
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -73,7 +77,7 @@ class IntroductionViewController: IFTTTAnimatedPagingScrollViewController {
     override func scrollViewDidScroll(scrollView: UIScrollView) {
         animateCurrentFrame()
         
-        let nearestPage = floor(pageOffset() + 0.5)
+        let nearestPage = floor(pageOffset + 0.5)
         pageControl.currentPage = Int(nearestPage)
     }
     
@@ -97,7 +101,7 @@ class IntroductionViewController: IFTTTAnimatedPagingScrollViewController {
             scaleFactor = kScreen_Height / desginHeight
         }
         
-        for index in 0..<numberOfPages {
+        for index in 0..<numberOfPages() {
             let indexInt = Int(index)
             let imageKey = imageKeyForIndex(indexInt)
             let viewKey  = viewKeyForIndex(indexInt)
@@ -187,7 +191,7 @@ class IntroductionViewController: IFTTTAnimatedPagingScrollViewController {
         
         pageControl = {
             let control = SMPageControl()
-            control.numberOfPages = Int(self.numberOfPages)
+            control.numberOfPages = numberOfPages()
             control.currentPage = 0
             control.userInteractionEnabled = false
             control.pageIndicatorImage = pageIndicatorImage
@@ -211,9 +215,9 @@ class IntroductionViewController: IFTTTAnimatedPagingScrollViewController {
     }
     
     private func configureTipAndTitleViewAnimations() {
-        for index in 0..<numberOfPages {
-            let indexInt = Int(index)
-            let viewKey = viewKeyForIndex(indexInt)
+        for index in 0..<numberOfPages() {
+            let indexInt = CGFloat(index)
+            let viewKey = viewKeyForIndex(Int(indexInt))
             let iconView = iconsDict[viewKey]?.1
             let tipView = tipsDict[viewKey]?.1
             if let iconView = iconView {
@@ -230,20 +234,20 @@ class IntroductionViewController: IFTTTAnimatedPagingScrollViewController {
                         make.centerY.equalTo(-kScreen_Height / 6.0)
                     })
                 }
-                let iconAlphaAnimation = IFTTTAlphaAnimation(view: iconView)
-                iconAlphaAnimation.addKeyframeForTime(CGFloat(indexInt) - 0.5, alpha: 0.0)
-                iconAlphaAnimation.addKeyframeForTime(CGFloat(indexInt), alpha: 1.0)
-                iconAlphaAnimation.addKeyframeForTime(CGFloat(indexInt) + 0.5, alpha: 0.0)
+                let iconAlphaAnimation = AlphaAnimation(view: iconView)
+                iconAlphaAnimation.addKeyframe(CGFloat(indexInt) - 0.5, value: 0.0)
+                iconAlphaAnimation.addKeyframe(CGFloat(indexInt), value: 1.0)
+                iconAlphaAnimation.addKeyframe(CGFloat(indexInt) + 0.5, value: 0.0)
                 animator.addAnimation(iconAlphaAnimation)
             }
             
             if let tipView = tipView {
                 keepView(tipView, onPages: [indexInt+1, indexInt, indexInt-1], atTimes: [indexInt-1, indexInt, indexInt+1])
                 
-                let iconAlphaAnimation = IFTTTAlphaAnimation(view: tipView)
-                iconAlphaAnimation.addKeyframeForTime(CGFloat(indexInt) - 0.5, alpha: 0.0)
-                iconAlphaAnimation.addKeyframeForTime(CGFloat(indexInt), alpha: 1.0)
-                iconAlphaAnimation.addKeyframeForTime(CGFloat(indexInt) + 0.5, alpha: 0.0)
+                let iconAlphaAnimation = AlphaAnimation(view: tipView)
+                iconAlphaAnimation.addKeyframe(CGFloat(indexInt) - 0.5, value: 0.0)
+                iconAlphaAnimation.addKeyframe(CGFloat(indexInt), value: 1.0)
+                iconAlphaAnimation.addKeyframe(CGFloat(indexInt) + 0.5, value: 0.0)
                 animator.addAnimation(iconAlphaAnimation)
                 
                 tipView.snp_makeConstraints(closure: { (make) in

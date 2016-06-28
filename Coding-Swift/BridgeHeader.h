@@ -9,7 +9,7 @@
 #ifndef BridgeHeader_h
 #define BridgeHeader_h
 
-#import <CommonCrypto/CommonDigest.h>
 #import "JDStatusBarNotification.h"
+#import <CommonCrypto/CommonDigest.h>
 
 #endif /* BridgeHeader_h */

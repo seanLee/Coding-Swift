@@ -72,7 +72,7 @@ class Input_OnlyText_Cell: UITableViewCell {
         return view
     }()
     
-    // MARK: -
+    // MARK: - CellIdentifier
     static let kCellIdentifier_Input_OnlyText_Cell_Text         = "Input_OnlyText_Cell_Text"
     static let kCellIdentifier_Input_OnlyText_Cell_Captcha      = "Input_OnlyText_Cell_Captcha"
     static let kCellIdentifier_Input_OnlyText_Cell_Password     = "Input_OnlyText_Cell_Password"
