@@ -545,6 +545,7 @@
 		AD29FC7C1D10F55000AF1FC4 /* UIImage+BlurredFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD29FC7A1D10F55000AF1FC4 /* UIImage+BlurredFrame.swift */; };
 		AD29FC7D1D10F55000AF1FC4 /* UIImage+ImageEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD29FC7B1D10F55000AF1FC4 /* UIImage+ImageEffects.swift */; };
 		AD7E128C1D227A9A00624471 /* Login2FATipCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD7E128B1D227A9A00624471 /* Login2FATipCell.swift */; };
+		AD96CB0F1D23C1B500054B5C /* UIButton+Bootstrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD96CB0E1D23C1B500054B5C /* UIButton+Bootstrap.swift */; };
 		ADD8818D1D0D133D0008B32E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD8818C1D0D133D0008B32E /* LoginViewController.swift */; };
 		ADD881901D0D14D60008B32E /* Input_OnlyText_Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD8818F1D0D14D60008B32E /* Input_OnlyText_Cell.swift */; };
 		ADD881931D0D163B0008B32E /* UITapImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD881921D0D163B0008B32E /* UITapImageView.swift */; };
@@ -1097,6 +1098,7 @@
 		AD29FC7A1D10F55000AF1FC4 /* UIImage+BlurredFrame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+BlurredFrame.swift"; sourceTree = "<group>"; };
 		AD29FC7B1D10F55000AF1FC4 /* UIImage+ImageEffects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+ImageEffects.swift"; sourceTree = "<group>"; };
 		AD7E128B1D227A9A00624471 /* Login2FATipCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Login2FATipCell.swift; sourceTree = "<group>"; };
+		AD96CB0E1D23C1B500054B5C /* UIButton+Bootstrap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+Bootstrap.swift"; sourceTree = "<group>"; };
 		ADD8818C1D0D133D0008B32E /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		ADD8818F1D0D14D60008B32E /* Input_OnlyText_Cell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Input_OnlyText_Cell.swift; sourceTree = "<group>"; };
 		ADD881921D0D163B0008B32E /* UITapImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITapImageView.swift; sourceTree = "<group>"; };
@@ -2065,6 +2067,7 @@
 				AD27AC8D1D0150A700B52C38 /* UIColor+Expanded.swift */,
 				AD27AC8E1D0150A700B52C38 /* UIImage+Common.swift */,
 				AD27AC8F1D0150A700B52C38 /* UIView+Common.swift */,
+				AD96CB0E1D23C1B500054B5C /* UIButton+Bootstrap.swift */,
 				AD27AC901D0150A700B52C38 /* UIView+Frame.swift */,
 				AD27AC911D0150A700B52C38 /* UIViewController+Swizzle.swift */,
 				AD27AEC01D0153ED00B52C38 /* String + Common.swift */,
@@ -2796,6 +2799,7 @@
 				AD29FC7C1D10F55000AF1FC4 /* UIImage+BlurredFrame.swift in Sources */,
 				AD27AEB71D0150A700B52C38 /* EAIntroView.swift in Sources */,
 				AD27AEB11D0150A700B52C38 /* UIViewController+Swizzle.swift in Sources */,
+				AD96CB0F1D23C1B500054B5C /* UIButton+Bootstrap.swift in Sources */,
 				ADD881951D0D1D450008B32E /* PhoneCodeButton.swift in Sources */,
 				ADD881931D0D163B0008B32E /* UITapImageView.swift in Sources */,
 				AD27AEAB1D0150A700B52C38 /* NSURL+Common.swift in Sources */,

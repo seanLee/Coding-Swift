@@ -12,7 +12,7 @@ import Accelerate
 extension UIImage {
     
     func applyLightEffect() -> UIImage? {
-        let tintColor = UIColor(white: 1.0, alpha: 3.0)
+        let tintColor = UIColor(white: 1.0, alpha: 0.3)
         return applyBlurWithRadius(30.0, tintColor: tintColor, saturationDeltaFactor: 1.8, maskImage: nil)
     }
     
@@ -93,9 +93,9 @@ extension UIImage {
                 if radius % 2 != 1 {
                     radius = radius + 1
                 }
-                vImageBoxConvolve_ARGB8888(&effectInBuffer, &effectOutBuffer, nil, 0, 0, UInt32(radius), UInt32(radius), UnsafePointer<UInt8>.init(bitPattern: 0), UInt32(kvImageEdgeExtend))
-                vImageBoxConvolve_ARGB8888(&effectOutBuffer, &effectInBuffer, nil, 0, 0, UInt32(radius), UInt32(radius), UnsafePointer<UInt8>.init(bitPattern: 0), UInt32(kvImageEdgeExtend))
-                vImageBoxConvolve_ARGB8888(&effectInBuffer, &effectOutBuffer, nil, 0, 0, UInt32(radius), UInt32(radius), UnsafePointer<UInt8>.init(bitPattern: 0), UInt32(kvImageEdgeExtend))
+                vImageBoxConvolve_ARGB8888(&effectInBuffer, &effectOutBuffer, nil, 0, 0, UInt32(radius), UInt32(radius), nil, UInt32(kvImageEdgeExtend))
+                vImageBoxConvolve_ARGB8888(&effectOutBuffer, &effectInBuffer, nil, 0, 0, UInt32(radius), UInt32(radius), nil, UInt32(kvImageEdgeExtend))
+                vImageBoxConvolve_ARGB8888(&effectInBuffer, &effectOutBuffer, nil, 0, 0, UInt32(radius), UInt32(radius), nil, UInt32(kvImageEdgeExtend))
             }
             var effectImageBuffersAreSwapped = false
             if hasStaturationChange {
@@ -104,11 +104,11 @@ extension UIImage {
                     0.0722 + 0.9278 * s,  0.0722 - 0.0722 * s,  0.0722 - 0.0722 * s,  0,
                     0.7152 - 0.7152 * s,  0.7152 + 0.2848 * s,  0.7152 - 0.7152 * s,  0,
                     0.2126 - 0.2126 * s,  0.2126 - 0.2126 * s,  0.2126 + 0.7873 * s,  0,
-                                        0,                  0,                    0,  1,
+                    0,                  0,                    0,                      1,
                     ]
                 let divisor: Int32 = 256
-                let matrixSize = strideofValue(floatingPointSaturationMatrix) / strideofValue(floatingPointSaturationMatrix[0])
-                var saturationMatrix = [Int16]()
+                let matrixSize = (strideofValue(floatingPointSaturationMatrix) * floatingPointSaturationMatrix.count) / strideofValue(floatingPointSaturationMatrix[0])
+                var saturationMatrix = [Int16].init(count: matrixSize, repeatedValue: 0)
                 for index in 0..<matrixSize {
                     saturationMatrix[index] = Int16(round(floatingPointSaturationMatrix[index] * CGFloat(divisor)))
                 }
@@ -121,13 +121,13 @@ extension UIImage {
             }
             if !effectImageBuffersAreSwapped {
                 effectImage = UIGraphicsGetImageFromCurrentImageContext()
-                UIGraphicsEndImageContext()
             }
+            UIGraphicsEndImageContext()
             
             if effectImageBuffersAreSwapped {
                 effectImage = UIGraphicsGetImageFromCurrentImageContext()
-                UIGraphicsEndImageContext()
             }
+            UIGraphicsEndImageContext()
         }
         
         // set up output context

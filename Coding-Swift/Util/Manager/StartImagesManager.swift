@@ -13,18 +13,10 @@ import ObjectMapper
 private let kStartImageName = "start_image_name"
 
 class StartImagesManager: NSObject {
-    private static var share_manager: StartImagesManager?
+    static let shareManager = StartImagesManager()
     
     private var imageLoadedArray = [StartImage]()
     private var startImage: StartImage?
-    
-    class func shareManager() -> StartImagesManager {
-        var onceToken:dispatch_once_t = 0
-        dispatch_once(&onceToken) {
-            share_manager = StartImagesManager()
-        }
-        return share_manager!
-    }
     
     override init() {
         super.init()
@@ -151,7 +143,7 @@ class StartImagesManager: NSObject {
             let resultA = result?.valueForKey("data") as! NSArray
             if self.createFolder(self.downloadPath) {
                 if resultA.writeToFile(self.pathOfSTPlist, atomically: true) {
-                    StartImagesManager.shareManager().startDownloadImages()
+                    StartImagesManager.shareManager.startDownloadImages()
                 }
             }
         }

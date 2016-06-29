@@ -37,7 +37,7 @@ class EaseStartView: UIView {
     // MARK: - func
     class func startView() -> EaseStartView {
         let logoIcon = UIImage(named: "logo_coding_top")
-        let st = StartImagesManager.shareManager().randomImage()
+        let st = StartImagesManager.shareManager.randomImage()
         return EaseStartView.init(bgImage: st.image, logonIcon: logoIcon!, descriptionStr: st.descriptionStr)
     }
     

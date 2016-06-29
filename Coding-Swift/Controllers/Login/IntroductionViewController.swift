@@ -267,7 +267,6 @@ class IntroductionViewController: AnimatedPagingScrollViewController {
         vc.showDismissButton = true
         
         let nav = BaseNavigationController(rootViewController: vc)
-        
         presentViewController(nav, animated: true, completion: nil)
     }
 }

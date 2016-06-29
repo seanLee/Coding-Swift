@@ -64,6 +64,11 @@ private extension AppDelegate {
         navigationBarAppearance.titleTextAttributes = textAttributes
     }
     
+    private func setupLoginViewController() {
+        let vc = LoginViewController()
+        window?.rootViewController = vc;
+    }
+    
     private func setupTabViewController() {
         let rootVC = RootTabViewController()
         rootVC.tabBar.translucent = true

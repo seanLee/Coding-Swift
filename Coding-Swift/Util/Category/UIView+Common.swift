@@ -62,6 +62,6 @@ extension UIView {
         }
         layer.startPoint = startPoint
         layer.endPoint = endPoint
-        layer.addSublayer(layer)
+        self.layer.addSublayer(layer)
     }
 }
