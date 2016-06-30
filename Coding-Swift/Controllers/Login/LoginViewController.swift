@@ -9,20 +9,56 @@
 import UIKit
 import NYXImagesKit
 import TPKeyboardAvoiding
+import SDWebImage
 
 class LoginViewController: BaseViewController {
 
     // MARK: - Property
-    var showDismissButton: Bool!
-    var captchaNeeded: Bool = false
+    var showDismissButton   : Bool = false
+    var captchaNeeded       : Bool = false
+    var is2FAUI             : Bool = false
     
-    private lazy var myLogin = Login()
+    private let myLogin = Login()
     
     // MARK: - Views
-    private var myTableView: TPKeyboardAvoidingTableView!
-    private var bottomView: UIView!
+    private lazy var myTableView: TPKeyboardAvoidingTableView = {
+        let tableview = TPKeyboardAvoidingTableView()
+        tableview.separatorStyle = .None;
+        tableview.backgroundView = self.bgBlurredView;
+        tableview.delegate = self
+        tableview.dataSource = self
+        return tableview
+    }()
+    
+    private lazy var bottomView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.clearColor()
+        return view
+    }()
+    
     private var iconUserView: UIImageView!
-    private var loginButton: UIButton!
+    
+    private lazy var loginButton: UIButton = {
+        let button = UIButton.buttonWithStyle(.StrapSuccessStyle, title: "登录", rect: CGRectMake(kLoginPaddingLeftWidth, 20, kScreen_Width-kLoginPaddingLeftWidth*2, 45), target: self, selector: #selector(sendLogin))
+        return button
+    }()
+    
+    private lazy var cannotLoginButton: UIButton = {
+        let button = UIButton(frame: CGRectMake(0, 0, 100, 30))
+        button.setTitle("找回密码", forState: .Normal)
+        button.titleLabel?.font = UIFont.systemFontOfSize(14.0)
+        button.setTitleColor(UIColor(white: 1.0, alpha: 0.5), forState: .Normal)
+        button.setTitleColor(UIColor(white: 0.5, alpha: 0.5), forState: .Highlighted)
+        button.addTarget(self, action: #selector(cannotLoginBtnClicked), forControlEvents: .TouchUpInside)
+        return button
+    }()
+    
+    private lazy var dismissButton: UIButton = {
+        let button = UIButton(frame: CGRectMake(0, 20, 50, 50))
+        button.setImage(UIImage(named: "dismissBtn_Nav"), forState: .Normal)
+        button.addTarget(self, action: #selector(dismissButtonClicked(_:)), forControlEvents: .TouchUpInside)
+        return button
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,16 +67,7 @@ class LoginViewController: BaseViewController {
         
 
         // Do any additional setup after loading the view.
-        myTableView = {
-            let tableview = TPKeyboardAvoidingTableView()
-            tableview.separatorStyle = .None;
-            tableview.backgroundView = bgBlurredView;
-            tableview.delegate = self
-            tableview.dataSource = self
-            view.addSubview(tableview)
-            return tableview
-        }()
-        
+        view.addSubview(myTableView)
         myTableView.snp_makeConstraints { (make) in
             make.edges.equalTo(view);
         }
@@ -48,6 +75,9 @@ class LoginViewController: BaseViewController {
         myTableView.tableHeaderView = customHeaderView()
         myTableView.tableFooterView = customFooterView()
         configBottomView()
+        showdismissButton(showDismissButton)
+        
+        refreshIconUserImage()
     }
     // MARK: - Table Header And Footer
     private func customHeaderView() -> UIView {
@@ -84,8 +114,16 @@ class LoginViewController: BaseViewController {
     private func customFooterView() -> UIView {
         let footerView = UIView(frame: CGRectMake(0, 0, kScreen_Width, 150.0))
         
-        loginButton = UIButton.buttonWithStyle(.StrapSuccessStyle, title: "登录", rect: CGRectMake(kLoginPaddingLeftWidth, 20, kScreen_Width-kLoginPaddingLeftWidth*2, 45), target: self, selector: #selector(sendLogin))
         footerView.addSubview(loginButton)
+        
+        footerView.addSubview(cannotLoginButton)
+        (
+            cannotLoginButton.snp_makeConstraints(closure: { (make) in
+                make.size.equalTo(CGSizeMake(100.0, 30.0))
+                make.centerX.equalTo(footerView)
+                make.top.equalTo(loginButton.snp_bottom).offset(20.0)
+            })
+        )
         
         return footerView
     }
@@ -108,8 +146,6 @@ class LoginViewController: BaseViewController {
     }
     
     private func configBottomView() {
-        bottomView = UIView()
-        bottomView.backgroundColor = UIColor.clearColor()
         view.addSubview(bottomView)
         (
             bottomView.snp_makeConstraints(closure: { (make) in
@@ -138,6 +174,19 @@ class LoginViewController: BaseViewController {
         )
     }
     
+    private func refreshIconUserImage() {
+        let textStr = myLogin.email
+        if textStr.length > 0 {
+            let curUser = Login.userWithGlobaykeyOrEmail(textStr)
+            if let _ = curUser,
+                let avatar = curUser?.avatar {
+                iconUserView.sd_setImageWithURL(avatar.urlImageWithCodePathResizeToView(iconUserView), placeholderImage: UIImage(named: "icon_user_monkey"))
+                return
+            }
+        }
+        iconUserView.image = UIImage(named: "icon_user_monkey")
+    }
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
@@ -147,6 +196,20 @@ class LoginViewController: BaseViewController {
         super.viewDidAppear(animated)
     }
     
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        view.endEditing(true)
+    }
+    
+    private func showdismissButton(willShow: Bool) {
+        dismissButton.hidden = !willShow
+        if willShow {
+            if dismissButton.superview == nil {
+                view.addSubview(dismissButton)
+            }
+        }
+    }
+    
     // MARK: - Action
     @objc private func goRegisterVC(sender: AnyObject) {
         print("注册");
@@ -154,6 +217,18 @@ class LoginViewController: BaseViewController {
     
     @objc private func sendLogin() {
         print("登录")
+    }
+    
+    @objc private func cannotLoginBtnClicked() {
+        print("找回密码")
+    }
+    
+    @objc private func dismissButtonClicked(sender: AnyObject) {
+        if is2FAUI {
+            is2FAUI = false
+        } else {
+            dismissViewControllerAnimated(true, completion: nil)
+        }
     }
 }
 

@@ -26,7 +26,7 @@ extension UIViewController {
     }
     
     // MARK: - Customer BackButton
-    func backButton() -> UIBarButtonItem {
+    private func backButton() -> UIBarButtonItem {
         var textArributes: Dictionary<String, AnyObject>?
         let temporaryBarButtonItem = UIBarButtonItem()
         temporaryBarButtonItem.title = "返回"
@@ -44,20 +44,20 @@ extension UIViewController {
         return temporaryBarButtonItem
     }
     
-    func goBack_Swizzle() {
+    @objc private func goBack_Swizzle() {
         self.navigationController?.popViewControllerAnimated(true)
     }
     
     // MARK: - Private Method
-    func viewWillAppear_swizzle(animated: Bool) {
+    @objc private func viewWillAppear_swizzle(animated: Bool) {
         viewWillAppear_swizzle(animated)
     }
     
-    func viewDidAppear_swizzle(animated: Bool) {
+    @objc private func viewDidAppear_swizzle(animated: Bool) {
         viewDidAppear_swizzle(animated)
     }
     
-    func viewWillDisappear_swizzle(animated: Bool) {
+    @objc private func viewWillDisappear_swizzle(animated: Bool) {
         viewWillDisappear_swizzle(animated)
         if self.navigationItem.backBarButtonItem == nil && self.navigationController?.viewControllers.count > 1 {
             self.navigationItem.backBarButtonItem = self.backButton()

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RegexKitLite
 
 extension String {
     // MARK: - Security
@@ -84,5 +85,29 @@ extension String {
         tempString = tempString.stringByFoldingWithOptions(.DiacriticInsensitiveSearch, locale: NSLocale.currentLocale())
         tempString = tempString.stringByReplacingOccurrencesOfString(" ", withString: "")
         return tempString.uppercaseString
+    }
+    
+    // MARK: - NSURL
+    func urlImageWithCodePathResizeToView(view: UIView) -> NSURL {
+        return urlImageWithCodePathResize(UIScreen.mainScreen().scale * CGRectGetWidth(view.frame))
+    }
+    
+    func urlImageWithCodePathResize(width: CGFloat) -> NSURL {
+        return urlImageWithCodePathResize(width, needCrop: false)
+    }
+    
+    func urlImageWithCodePathResize(width: CGFloat, needCrop: Bool) -> NSURL {
+        var urlStr: String = self
+        var canCrop = false
+        if self.hasSuffix("http") {
+            urlStr = self
+//            print(urlStr.rangeOfString(<#T##aString: String##String#>))
+//            if urlStr.rangeOfString("qbox.me")?.count {
+//                <#code#>
+//            }
+        } else {
+            
+        }
+        return NSURL(string: urlStr)!
     }
 }

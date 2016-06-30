@@ -17,14 +17,14 @@ private let kLoginDataListPath = "login_data_list_path.plist"
 class Login: NSObject {
     private static var _user: User?
     
-    var email: String!, password: String!, j_captcha: String!
+    var email: String!, password: String, j_captcha: String
     var remember_me: Int = 1
     
     override init() {
-        super.init()
         email = ""
         password = ""
         j_captcha = ""
+        super.init()
     }
     
     var toPath: String {
@@ -104,8 +104,36 @@ class Login: NSObject {
     }
     
     class func saveLoginData(loginData: [String: AnyObject]) -> Bool {
-        let saved: Bool = false
-        
+        var saved: Bool = false
+        if loginData.keys.count > 0 {
+            let loginDataList = readLoginDataList()
+            let curUser = Mapper<User>().map(loginData)
+            //save the data
+            if let global_key = curUser?.global_key {
+                if global_key.length > 0 {
+                    loginDataList.setObject(loginData, forKey: global_key)
+                    saved = true
+                }
+            }
+            
+            if let email = curUser?.email {
+                if email.length > 0 {
+                    loginDataList.setObject(loginData, forKey: email)
+                    saved = true
+                }
+            }
+            
+            if let phone = curUser?.phone {
+                if phone.length > 0 {
+                    loginDataList.setObject(loginData, forKey: phone)
+                    saved = true
+                }
+            }
+            
+            if saved {
+                saved = loginDataList.writeToFile(loginDataListPath(), atomically: true)
+            }
+        }
         
         return saved
     }
@@ -115,8 +143,29 @@ class Login: NSObject {
         return documentPath.stringByAppendingPathComponent(kLoginDataListPath)
     }
     
+    class func userWithGlobaykeyOrEmail(key: String) -> User? {
+        if key.length == 0 {
+            return nil
+        }
+        let loginDataList = readLoginDataList()
+        let loginData = loginDataList[key]
+        return Mapper<User>().map(loginData)
+    }
+    
     class func doLogout() {
-        
+        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.setObject(NSNumber(bool: false), forKey: kLoginStatus)
+        defaults.synchronize()
+        //删除cookie
+        let cookies = NSHTTPCookieStorage.sharedHTTPCookieStorage().cookies
+        if let cookies = cookies {
+            for cookie in cookies {
+                if cookie.domain.hasSuffix(".coding.net") {
+                    NSHTTPCookieStorage.sharedHTTPCookieStorage().deleteCookie(cookie)
+                }
+            }
+        }
     }
     
     class func setPreUserEmail(emailStr: String) {
@@ -131,5 +180,12 @@ class Login: NSObject {
     class func preUserEmail() -> String? {
         let defauls = NSUserDefaults.standardUserDefaults()
         return defauls.objectForKey(kLoginPreUserEmail) as? String
+    }
+    
+    class func isLoginUserGlobalKey(global_key: String) -> Bool {
+        if global_key.length == 0 {
+            return false
+        }
+        return (curLoginUser!.global_key == global_key)
     }
 }

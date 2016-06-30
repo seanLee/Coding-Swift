@@ -14,6 +14,9 @@ pod 'ObjectMapper', '~> 1.2.0'
 pod 'RazzleDazzle', '~> 0.1.2'
 pod 'FontAwesome.swift', '~> 0.7.3'
 
+#Objective-C
+pod 'RegexKitLite', '~> 4.0'
+pod 'SDWebImage', '~> 3.8.1'
 pod 'hpple', '0.2.0'
 pod 'TPKeyboardAvoiding', '~> 1.3'
 pod 'RDVTabBarController', '~> 1.1.9'
