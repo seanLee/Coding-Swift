@@ -27,6 +27,9 @@ class LoginViewController: BaseViewController {
         tableview.backgroundView = self.bgBlurredView;
         tableview.delegate = self
         tableview.dataSource = self
+        tableview.registerClass(Login2FATipCell.classForCoder(), forCellReuseIdentifier: Login2FATipCell.kCellIdentifier_Login2FATipCell)
+        tableview.registerClass(Input_OnlyText_Cell.classForCoder(), forCellReuseIdentifier: Input_OnlyText_Cell.kCellIdentifier_Input_OnlyText_Cell_Text)
+        tableview.registerClass(Input_OnlyText_Cell.classForCoder(), forCellReuseIdentifier: Input_OnlyText_Cell.kCellIdentifier_Input_OnlyText_Cell_Captcha)
         return tableview
     }()
     
@@ -63,8 +66,9 @@ class LoginViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        myLogin.email = Login.preUserEmail()
-        
+        if let emaill = Login.preUserEmail() {
+            myLogin.email = emaill
+        }
 
         // Do any additional setup after loading the view.
         view.addSubview(myTableView)
@@ -234,13 +238,59 @@ class LoginViewController: BaseViewController {
 
 extension LoginViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return is2FAUI ? 2 : (captchaNeeded ? 3 : 2)
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = UITableViewCell();
-        cell.backgroundView = nil;
-        cell.backgroundColor = UIColor.clearColor();
-        return cell;
+        if is2FAUI && indexPath.row == 0 {
+            let cell = tableView.dequeueReusableCellWithIdentifier(Login2FATipCell.kCellIdentifier_Login2FATipCell, forIndexPath: indexPath) as! Login2FATipCell
+            cell.tipLabel.text = "  您的账户开启了两步验证，请输入动态验证码登录  "
+            return cell
+        }
+        
+        let cell = tableView.dequeueReusableCellWithIdentifier(indexPath.row > 1 ? Input_OnlyText_Cell.kCellIdentifier_Input_OnlyText_Cell_Captcha : Input_OnlyText_Cell.kCellIdentifier_Input_OnlyText_Cell_Text, forIndexPath: indexPath) as! Input_OnlyText_Cell
+        cell.isForLoginVC = true
+        
+        if is2FAUI {
+        
+        } else {
+            if indexPath.row == 0 {
+                cell.textField.keyboardType = .EmailAddress
+                cell.setPlacerholder(" 手机号码/电子邮箱/个性后缀", value: myLogin.email)
+                cell.textValueChangedBlock = { [weak self] value in
+                    if let strongSelf = self {
+                        strongSelf.myLogin.email = value
+                    }
+                }
+                cell.editDidBeginBlock  = { [weak self] value in
+                    if let strongSelf = self {
+                        
+                    }
+                }
+                cell.editDidEndBlock = { [weak self] value in
+                    if let strongSelf = self {
+                        
+                    }
+                }
+
+            } else if indexPath.row == 1 {
+                cell.setPlacerholder(" 密码", value: myLogin.password)
+                cell.textField.secureTextEntry = true
+                cell.textValueChangedBlock = { [weak self] value in
+                    if let strongSelf = self {
+                        strongSelf.myLogin.password = value
+                    }
+                }
+            } else {
+                cell.setPlacerholder(" 验证码", value: myLogin.j_captcha)
+                cell.textValueChangedBlock = { [weak self] value in
+                    if let strongSelf = self {
+                        strongSelf.myLogin.j_captcha = value
+                        print(self?.myLogin.j_captcha)
+                    }
+                }
+            }
+        }
+        return cell
     }
 }

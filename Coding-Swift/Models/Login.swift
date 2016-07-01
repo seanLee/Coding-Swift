@@ -17,13 +17,10 @@ private let kLoginDataListPath = "login_data_list_path.plist"
 class Login: NSObject {
     private static var _user: User?
     
-    var email: String!, password: String, j_captcha: String
+    var email: String = "", password: String = "", j_captcha: String = ""
     var remember_me: Int = 1
     
     override init() {
-        email = ""
-        password = ""
-        j_captcha = ""
         super.init()
     }
     

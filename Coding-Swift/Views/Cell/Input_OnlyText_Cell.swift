@@ -12,8 +12,13 @@ class Input_OnlyText_Cell: UITableViewCell {
     
     var isForLoginVC: Bool = false
     
+    // MARK: - Block
+    var textValueChangedBlock: (String -> Void)?
+    var editDidBeginBlock    : (String -> Void)?
+    var editDidEndBlock      : (String -> Void)?
+    
     // MARK: - Customer View
-    private lazy var textField: UITextField = {
+    lazy var textField: UITextField = {
         let field = UITextField()
         field.font = UIFont.systemFontOfSize(17.0)
         field.addTarget(self, action: #selector(editDidBegin(_:)), forControlEvents: .EditingDidBegin)
@@ -63,6 +68,7 @@ class Input_OnlyText_Cell: UITableViewCell {
         btn.contentHorizontalAlignment = .Right
         btn.setImage(UIImage(named: "text_clear_btn"), forState: .Normal)
         btn.addTarget(self, action: #selector(clearBtnClicked(_:)), forControlEvents: .TouchUpInside)
+        self.contentView.addSubview(btn)
         return btn
     }()
     
@@ -179,7 +185,6 @@ class Input_OnlyText_Cell: UITableViewCell {
         super.layoutSubviews()
         
         if isForLoginVC {
-            contentView.addSubview(clearBtn)
             clearBtn.snp_makeConstraints(closure: { (make) in
                 make.width.height.equalTo(30.0)
                 make.centerY.equalTo(contentView)
@@ -219,11 +224,11 @@ class Input_OnlyText_Cell: UITableViewCell {
             offset = -kLoginPaddingLeftWidth
         }
         
-        clearBtn.snp_remakeConstraints { (make) in
+        clearBtn.snp_updateConstraints { (make) in
             make.right.equalTo(contentView).offset(offset)
         }
         
-        textField.snp_remakeConstraints { (make) in
+        textField.snp_updateConstraints { (make) in
             offset = offset - (self.isForLoginVC ? 30.0 : 0)
             make.right.equalTo(contentView).offset(offset)
         }
@@ -231,15 +236,29 @@ class Input_OnlyText_Cell: UITableViewCell {
     
     // MARK: - TextField
     @objc private func editDidBegin(sender: AnyObject) {
+        lineView.backgroundColor = UIColor.colorWithHexString("0xffffff")
+        clearBtn.hidden = isForLoginVC ? textField.text?.length <= 0 : true
         
+        if let block = editDidBeginBlock {
+            block(textField.text!)
+        }
     }
     
     @objc private func editValueChanged(sender: AnyObject) {
+        clearBtn.hidden = isForLoginVC ? textField.text?.length <= 0 : true
         
+        if let block = textValueChangedBlock {
+            block(textField.text!)
+        }
     }
     
     @objc private func editDidEnd(sender: AnyObject) {
+        lineView.backgroundColor = UIColor.colorWithHexString("0xffffff").colorWithAlphaComponent(0.5)
+        clearBtn.hidden = true
         
+        if let block = editDidEndBlock {
+            block(textField.text!);
+        }
     }
     
     // MARK: - Button
@@ -256,7 +275,8 @@ class Input_OnlyText_Cell: UITableViewCell {
     }
     
     @objc private func clearBtnClicked(sender: AnyObject) {
-        
+        textField.text = ""
+        editValueChanged(textField)
     }
     
     // MARK: - Action

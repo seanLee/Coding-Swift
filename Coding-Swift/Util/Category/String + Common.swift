@@ -101,7 +101,7 @@ extension String {
         var canCrop = false
         if self.hasSuffix("http") {
             urlStr = self
-//            print(urlStr.rangeOfString(<#T##aString: String##String#>))
+            print(urlStr.rangeOfString(""))
 //            if urlStr.rangeOfString("qbox.me")?.count {
 //                <#code#>
 //            }
