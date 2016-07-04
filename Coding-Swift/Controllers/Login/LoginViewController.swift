@@ -12,7 +12,7 @@ import TPKeyboardAvoiding
 import SDWebImage
 
 class LoginViewController: BaseViewController {
-
+    
     // MARK: - Property
     var showDismissButton   : Bool = false
     var captchaNeeded       : Bool = false
@@ -21,6 +21,12 @@ class LoginViewController: BaseViewController {
     private let myLogin = Login()
     
     // MARK: - Views
+    private lazy var inputTipsView: EaseInputTipsView = {
+        let tipsView = EaseInputTipsView(type: .EaseInputTipsViewTypeLogin)
+        tipsView.valueStr = ""
+        return tipsView
+    }()
+    
     private lazy var myTableView: TPKeyboardAvoidingTableView = {
         let tableview = TPKeyboardAvoidingTableView()
         tableview.separatorStyle = .None;
@@ -69,7 +75,7 @@ class LoginViewController: BaseViewController {
         if let emaill = Login.preUserEmail() {
             myLogin.email = emaill
         }
-
+        
         // Do any additional setup after loading the view.
         view.addSubview(myTableView)
         myTableView.snp_makeConstraints { (make) in
@@ -83,6 +89,9 @@ class LoginViewController: BaseViewController {
         
         refreshIconUserImage()
     }
+    
+    
+    
     // MARK: - Table Header And Footer
     private func customHeaderView() -> UIView {
         var iconUserViewWidth: CGFloat
@@ -95,7 +104,7 @@ class LoginViewController: BaseViewController {
         }
         
         let headerView = UIView(frame: CGRectMake(0, 0, kScreen_Width, kScreen_Height / 3.0))
-
+        
         iconUserView = UIImageView(frame: CGRectMake(0, 0, iconUserViewWidth, iconUserViewWidth))
         iconUserView.contentMode = .ScaleAspectFit
         iconUserView.layer.masksToBounds = true
@@ -198,6 +207,24 @@ class LoginViewController: BaseViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        if inputTipsView.superview == nil {
+            
+            inputTipsView.selectedTipBlock = { [weak self] value in
+                if let strongSelf = self {
+                    strongSelf.view.endEditing(true)
+                    strongSelf.myLogin.email = value
+                    strongSelf.refreshIconUserImage()
+                    strongSelf.myTableView.reloadData()
+                }
+            }
+            
+            let cell = myTableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0))
+            if let cell = cell {
+                inputTipsView.y = CGRectGetMaxY(cell.frame) - 0.5
+            }
+            
+            myTableView.addSubview(inputTipsView)
+        }
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -252,27 +279,31 @@ extension LoginViewController: UITableViewDelegate, UITableViewDataSource {
         cell.isForLoginVC = true
         
         if is2FAUI {
-        
+            
         } else {
             if indexPath.row == 0 {
                 cell.textField.keyboardType = .EmailAddress
                 cell.setPlacerholder(" 手机号码/电子邮箱/个性后缀", value: myLogin.email)
                 cell.textValueChangedBlock = { [weak self] value in
                     if let strongSelf = self {
+                        strongSelf.inputTipsView.valueStr = value
+                        strongSelf.inputTipsView.active = true
                         strongSelf.myLogin.email = value
+                        strongSelf.refreshIconUserImage()
                     }
                 }
                 cell.editDidBeginBlock  = { [weak self] value in
                     if let strongSelf = self {
-                        
+                        strongSelf.inputTipsView.valueStr = value
+                        strongSelf.inputTipsView.active = true
                     }
                 }
                 cell.editDidEndBlock = { [weak self] value in
                     if let strongSelf = self {
-                        
+                        strongSelf.inputTipsView.active = false
                     }
                 }
-
+                
             } else if indexPath.row == 1 {
                 cell.setPlacerholder(" 密码", value: myLogin.password)
                 cell.textField.secureTextEntry = true
