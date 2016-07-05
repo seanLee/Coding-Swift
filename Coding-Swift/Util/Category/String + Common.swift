@@ -72,6 +72,12 @@ extension String {
     }
     
     // MARK: - Formatter
+    func isPureInt() -> Bool {
+        let scanner = NSScanner(string: self)
+        var scanInt: Int32 = 0
+        return scanner.scanInt(&scanInt) && scanner.atEnd
+    }
+    
     func isPureFloat() -> Bool {
         let scanner = NSScanner.init(string: self)
         var scanFloat: Float = 0.0

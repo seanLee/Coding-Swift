@@ -47,11 +47,22 @@ class EaseInputTipsView: UIView {
         if valueStr.length == 0 {
             return nil
         }
-        if let location =  valueStr.rangeOfString("@") {
-            print(location)
+        if valueStr.rangeOfString("@") == nil {
+            return nil
+        }
+        if let location = valueStr.rangeOfString("@") {
             if location.count == 0 {
                 return nil
             }
+            let nameStr = valueStr.substringToIndex(location.startIndex)
+            let tipStr  = valueStr.substringFromIndex(location.endIndex)
+            var list = [String]()
+            for emaill in emailAllList {
+                if tipStr.length == 0 || emaill.rangeOfString(tipStr) != nil {
+                    list.append("\(nameStr)@\(emaill)")
+                }
+            }
+            return list
         }
         return nil
     }
@@ -93,9 +104,8 @@ class EaseInputTipsView: UIView {
     
     // MARK: - Initialize
     init(type: EaseInputTipsViewType) {
-        let padingWidth = Bool(type.rawValue) ? kLoginPaddingLeftWidth : 0.0
+        let padingWidth = (type == .EaseInputTipsViewTypeLogin) ? kLoginPaddingLeftWidth : 0.0
         super.init(frame: CGRectMake(padingWidth, 0, kScreen_Width-2*kLoginPaddingLeftWidth, 120.0))
-        
         myTableView.snp_makeConstraints { (make) in
             make.edges.equalTo(self)
         }

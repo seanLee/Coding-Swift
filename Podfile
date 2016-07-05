@@ -13,6 +13,8 @@ pod 'AlamofireNetworkActivityIndicator', '~> 1.0'
 pod 'ObjectMapper', '~> 1.2.0'
 pod 'RazzleDazzle', '~> 0.1.2'
 pod 'FontAwesome.swift', '~> 0.7.3'
+pod 'RxSwift', '~> 2.5.0'
+pod 'RxCocoa', '~> 2.5.0'
 
 #Objective-C
 pod 'RegexKitLite', '~> 4.0'

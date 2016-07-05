@@ -35,6 +35,11 @@ let kScreen_Width   = kScreen_Bounds.width
 let kPaddingLeftWidth     : CGFloat = 15.0
 let kLoginPaddingLeftWidth: CGFloat = 18.0
 
+// MARK: - Alert
+func kTipAlert(tip: String) {
+    UIAlertView(title: "提示", message: tip, delegate: nil, cancelButtonTitle: "知道了").show()
+}
+
 // MARK: - Orientations
 let kScreenOrientation = UIApplication.sharedApplication().statusBarOrientation
 

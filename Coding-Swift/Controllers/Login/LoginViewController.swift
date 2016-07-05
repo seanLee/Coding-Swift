@@ -10,13 +10,17 @@ import UIKit
 import NYXImagesKit
 import TPKeyboardAvoiding
 import SDWebImage
+import RxSwift
+import RxCocoa
 
 class LoginViewController: BaseViewController {
     
     // MARK: - Property
     var showDismissButton   : Bool = false
-    var captchaNeeded       : Bool = false
-    var is2FAUI             : Bool = false
+    private var captchaNeeded       : Bool = false
+    private var is2FAUI             : Bool = false
+    
+    private var otpCode: String?
     
     private let myLogin = Login()
     
@@ -128,6 +132,9 @@ class LoginViewController: BaseViewController {
         let footerView = UIView(frame: CGRectMake(0, 0, kScreen_Width, 150.0))
         
         footerView.addSubview(loginButton)
+        (
+            
+        )
         
         footerView.addSubview(cannotLoginButton)
         (
@@ -247,7 +254,11 @@ class LoginViewController: BaseViewController {
     }
     
     @objc private func sendLogin() {
-        print("登录")
+        let tipMsg = is2FAUI ? loginTipFor2FA() : myLogin.goToLoginTipWithCaptcha(captchaNeeded)
+        if let tip = tipMsg {
+            kTipAlert(tip)
+            return
+        }
     }
     
     @objc private func cannotLoginBtnClicked() {
@@ -323,5 +334,18 @@ extension LoginViewController: UITableViewDelegate, UITableViewDataSource {
             }
         }
         return cell
+    }
+    
+    // MARK: - Method
+    private func loginTipFor2FA() -> String? {
+        var tipStr: String?
+        if let otpCode = otpCode {
+            if !otpCode.isPureInt() || otpCode.length != 6 {
+                tipStr = "动态验证码必须是一个6位数字"
+            }
+        } else {
+            tipStr = "动态验证码不能为空"
+        }
+        return tipStr
     }
 }
