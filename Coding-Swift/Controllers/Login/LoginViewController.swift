@@ -10,8 +10,7 @@ import UIKit
 import NYXImagesKit
 import TPKeyboardAvoiding
 import SDWebImage
-import RxSwift
-import RxCocoa
+import ReactiveCocoa
 
 class LoginViewController: BaseViewController {
     
@@ -132,9 +131,9 @@ class LoginViewController: BaseViewController {
         let footerView = UIView(frame: CGRectMake(0, 0, kScreen_Width, 150.0))
         
         footerView.addSubview(loginButton)
-        (
-            
-        )
+        DynamicProperty(object: myLogin, keyPath: "email").signal.map {$0}.observeNext { (email) in
+            print("email is \(email)")
+        }
         
         footerView.addSubview(cannotLoginButton)
         (
