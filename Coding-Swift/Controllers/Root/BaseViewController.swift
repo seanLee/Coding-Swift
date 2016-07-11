@@ -7,8 +7,10 @@
 //
 
 import UIKit
+import RxSwift
 
 class BaseViewController: UIViewController {
+    var disposeBag = DisposeBag()
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)

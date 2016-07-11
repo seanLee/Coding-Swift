@@ -10,7 +10,6 @@ import UIKit
 import NYXImagesKit
 import TPKeyboardAvoiding
 import SDWebImage
-import ReactiveCocoa
 
 class LoginViewController: BaseViewController {
     
@@ -76,7 +75,7 @@ class LoginViewController: BaseViewController {
         super.viewDidLoad()
         
         if let emaill = Login.preUserEmail() {
-            myLogin.email = emaill
+            myLogin.email.value = emaill
         }
         
         // Do any additional setup after loading the view.
@@ -131,9 +130,6 @@ class LoginViewController: BaseViewController {
         let footerView = UIView(frame: CGRectMake(0, 0, kScreen_Width, 150.0))
         
         footerView.addSubview(loginButton)
-        DynamicProperty(object: myLogin, keyPath: "email").signal.map {$0}.observeNext { (email) in
-            print("email is \(email)")
-        }
         
         footerView.addSubview(cannotLoginButton)
         (
@@ -194,7 +190,7 @@ class LoginViewController: BaseViewController {
     }
     
     private func refreshIconUserImage() {
-        let textStr = myLogin.email
+        let textStr = myLogin.email.value
         if textStr.length > 0 {
             let curUser = Login.userWithGlobaykeyOrEmail(textStr)
             if let _ = curUser,
@@ -218,7 +214,7 @@ class LoginViewController: BaseViewController {
             inputTipsView.selectedTipBlock = { [weak self] value in
                 if let strongSelf = self {
                     strongSelf.view.endEditing(true)
-                    strongSelf.myLogin.email = value
+                    strongSelf.myLogin.email.value = value
                     strongSelf.refreshIconUserImage()
                     strongSelf.myTableView.reloadData()
                 }
@@ -293,12 +289,12 @@ extension LoginViewController: UITableViewDelegate, UITableViewDataSource {
         } else {
             if indexPath.row == 0 {
                 cell.textField.keyboardType = .EmailAddress
-                cell.setPlacerholder(" 手机号码/电子邮箱/个性后缀", value: myLogin.email)
+                cell.setPlacerholder(" 手机号码/电子邮箱/个性后缀", value: myLogin.email.value)
                 cell.textValueChangedBlock = { [weak self] value in
                     if let strongSelf = self {
                         strongSelf.inputTipsView.valueStr = value
                         strongSelf.inputTipsView.active = true
-                        strongSelf.myLogin.email = value
+                        strongSelf.myLogin.email.value = value
                         strongSelf.refreshIconUserImage()
                     }
                 }
@@ -315,18 +311,18 @@ extension LoginViewController: UITableViewDelegate, UITableViewDataSource {
                 }
                 
             } else if indexPath.row == 1 {
-                cell.setPlacerholder(" 密码", value: myLogin.password)
+                cell.setPlacerholder(" 密码", value: myLogin.password.value)
                 cell.textField.secureTextEntry = true
                 cell.textValueChangedBlock = { [weak self] value in
                     if let strongSelf = self {
-                        strongSelf.myLogin.password = value
+                        strongSelf.myLogin.password.value = value
                     }
                 }
             } else {
-                cell.setPlacerholder(" 验证码", value: myLogin.j_captcha)
+                cell.setPlacerholder(" 验证码", value: myLogin.j_captcha.value)
                 cell.textValueChangedBlock = { [weak self] value in
                     if let strongSelf = self {
-                        strongSelf.myLogin.j_captcha = value
+                        strongSelf.myLogin.j_captcha.value = value
                         print(self?.myLogin.j_captcha)
                     }
                 }
