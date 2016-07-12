@@ -12,7 +12,28 @@ import MBProgressHUD
 extension NSObject {
     // MARK: - Tip
     class func tipFromError(error: NSError) -> String {
-        return ""
+        if error.userInfo.count > 0 {
+            var tipStr = ""
+            if (error.userInfo["msg"] != nil)  {
+                let msgArray = error.userInfo["msg"] as! [String: String]
+                for value in msgArray.enumerate() {
+                    let msgStr = value.element.1
+                    if value.index + 1 < msgArray.count {
+                        tipStr.appendContentsOf("\(msgStr)\n")
+                    } else {
+                        tipStr.appendContentsOf("\(msgStr)")
+                    }
+                }
+            } else {
+                if error.userInfo["NSLocalizedDescription"] != nil {
+                    tipStr = error.userInfo["NSLocalizedDescription"] as! String
+                } else {
+                    tipStr.appendContentsOf("ErrorCode\(error.code)")
+                }
+            }
+            return tipStr
+        }
+        return " "
     }
     
     class func showError(error: NSError) -> Bool {
@@ -46,10 +67,29 @@ extension NSObject {
         var error: NSError?
         
         let errorCode = responseJSON["code"] as! Int
-        if errorCode == 1 {
-            error = NSError(domain: baseUrl, code: errorCode, userInfo: responseJSON)
-            if autoShowError {
-                NSObject.showError(error!)
+        if errorCode != 0 {
+            error = NSError(domain: baseUrl, code: errorCode, userInfo: responseJSON) as NSError
+            if errorCode == 1000 || errorCode == 3207 { //用户未登陆
+                if Login.isLogin {
+                    Login.doLogout() //已经登录的状态要清除
+                }
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(UInt64(1.0) * NSEC_PER_SEC)), dispatch_get_main_queue(), {
+                    (UIApplication.sharedApplication().delegate as! AppDelegate).setupLoginViewController()
+                    kTipAlert(NSObject.tipFromError(error!))
+                })
+            } else {
+                var params = [String: AnyObject]()
+                if errorCode == 907 { //每日新关注用户超过20
+                    params["type"] = 3
+                } else if errorCode == 1018 { //操作太频繁
+                    params["type"] = 1
+                }
+                if params.count > 0 {
+                    NSObject.showHudTipStr("发生错误")
+                }
+                if autoShowError {
+                    NSObject.showError(error!)
+                }
             }
         }
         return error;

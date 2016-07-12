@@ -10,15 +10,17 @@ import UIKit
 import NYXImagesKit
 import TPKeyboardAvoiding
 import SDWebImage
+import RxCocoa
+import RxSwift
 
 class LoginViewController: BaseViewController {
     
     // MARK: - Property
     var showDismissButton   : Bool = false
-    private var captchaNeeded       : Bool = false
-    private var is2FAUI             : Bool = false
+    private var captchaNeeded       : Variable<Bool> = Variable(false)
+    private var is2FAUI             : Variable<Bool> = Variable(false)
     
-    private var otpCode: String?
+    private var otpCode: Variable<String> = Variable("")
     
     private let myLogin = Login()
     
@@ -52,6 +54,12 @@ class LoginViewController: BaseViewController {
     private lazy var loginButton: UIButton = {
         let button = UIButton.buttonWithStyle(.StrapSuccessStyle, title: "登录", rect: CGRectMake(kLoginPaddingLeftWidth, 20, kScreen_Width-kLoginPaddingLeftWidth*2, 45), target: self, selector: #selector(sendLogin))
         return button
+    }()
+    
+    private lazy var activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
+        indicator.hidesWhenStopped = true
+        return indicator
     }()
     
     private lazy var cannotLoginButton: UIButton = {
@@ -130,7 +138,22 @@ class LoginViewController: BaseViewController {
         let footerView = UIView(frame: CGRectMake(0, 0, kScreen_Width, 150.0))
         
         footerView.addSubview(loginButton)
+        Observable.combineLatest(myLogin.email.asObservable(), myLogin.password.asObservable(), myLogin.j_captcha.asObservable(), captchaNeeded.asObservable(), is2FAUI.asObservable(), otpCode.asObservable()) { (emailValue, passwordValue, j_captchaValue, captchaNeededValue, is2FAUIValue, otpCodeValue) -> Bool in
+            if is2FAUIValue {
+                return otpCodeValue.length > 0
+            } else {
+                if captchaNeededValue && j_captchaValue.length == 0 {
+                    return false
+                } else {
+                    return (emailValue.length > 0 && passwordValue.length > 0)
+                }
+            }
+        }
+        .map {$0.boolValue}
+        .bindTo(loginButton.rx_enabled)
+        .addDisposableTo(disposeBag)
         
+        view.transform = CGAffineTransformIdentity
         footerView.addSubview(cannotLoginButton)
         (
             cannotLoginButton.snp_makeConstraints(closure: { (make) in
@@ -249,10 +272,50 @@ class LoginViewController: BaseViewController {
     }
     
     @objc private func sendLogin() {
-        let tipMsg = is2FAUI ? loginTipFor2FA() : myLogin.goToLoginTipWithCaptcha(captchaNeeded)
+        let tipMsg = is2FAUI.value.boolValue ? loginTipFor2FA() : myLogin.goToLoginTipWithCaptcha(captchaNeeded.value)
         if let tip = tipMsg {
             kTipAlert(tip)
             return
+        }
+        self.view.endEditing(true)
+        
+        let captchaViewSize = loginButton.bounds.size
+        activityIndicator.center = CGPoint(x: captchaViewSize.width / 2, y: captchaViewSize.height / 2)
+        loginButton.addSubview(activityIndicator)
+        //start animation
+        activityIndicator.startAnimating()
+        //enable the button
+        loginButton.enabled = false
+        
+        if is2FAUI.value.boolValue {
+            
+        } else {
+            let aPath = myLogin.toPath
+            let params = myLogin.toParams
+            NetAPIManager.sharedInstance.request_Login(aPath, params: params, block: { [weak self] (result, error) in
+                if let strongSelf = self {
+                    strongSelf.loginButton.enabled = true
+                    strongSelf.activityIndicator.stopAnimating()
+                }
+            })
+        }
+    }
+    
+    private func requestUnreadCount(data: [String: AnyObject]) {
+        let aPath = "api/user/unread-count"
+        let router = Router(requestMethod: RequestMethod.Get(aPath, nil))
+        NetAPIClient.sharedInstance().requestData(router) { [weak self] (result, error) in
+            if let strongSelf = self {
+                strongSelf.loginButton.enabled = true
+                strongSelf.activityIndicator.stopAnimating()
+                if error?.userInfo["msg"]?["user_need_activate"] != nil {
+                    
+                    return
+                } else {
+                    Login.setPreUserEmail(strongSelf.myLogin.email.value)
+                    
+                }
+            }
         }
     }
     
@@ -261,8 +324,8 @@ class LoginViewController: BaseViewController {
     }
     
     @objc private func dismissButtonClicked(sender: AnyObject) {
-        if is2FAUI {
-            is2FAUI = false
+        if is2FAUI.value.boolValue {
+            is2FAUI.value = false
         } else {
             dismissViewControllerAnimated(true, completion: nil)
         }
@@ -271,11 +334,11 @@ class LoginViewController: BaseViewController {
 
 extension LoginViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return is2FAUI ? 2 : (captchaNeeded ? 3 : 2)
+        return is2FAUI.value.boolValue ? 2 : (captchaNeeded.value.boolValue ? 3 : 2)
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if is2FAUI && indexPath.row == 0 {
+        if is2FAUI.value.boolValue && indexPath.row == 0 {
             let cell = tableView.dequeueReusableCellWithIdentifier(Login2FATipCell.kCellIdentifier_Login2FATipCell, forIndexPath: indexPath) as! Login2FATipCell
             cell.tipLabel.text = "  您的账户开启了两步验证，请输入动态验证码登录  "
             return cell
@@ -284,7 +347,7 @@ extension LoginViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCellWithIdentifier(indexPath.row > 1 ? Input_OnlyText_Cell.kCellIdentifier_Input_OnlyText_Cell_Captcha : Input_OnlyText_Cell.kCellIdentifier_Input_OnlyText_Cell_Text, forIndexPath: indexPath) as! Input_OnlyText_Cell
         cell.isForLoginVC = true
         
-        if is2FAUI {
+        if is2FAUI.value.boolValue {
             
         } else {
             if indexPath.row == 0 {
@@ -334,12 +397,12 @@ extension LoginViewController: UITableViewDelegate, UITableViewDataSource {
     // MARK: - Method
     private func loginTipFor2FA() -> String? {
         var tipStr: String?
-        if let otpCode = otpCode {
-            if !otpCode.isPureInt() || otpCode.length != 6 {
+        if otpCode.value.length == 0  {
+            tipStr = "动态验证码不能为空"
+        } else {
+            if !otpCode.value.isPureInt() || otpCode.value.length != 6 {
                 tipStr = "动态验证码必须是一个6位数字"
             }
-        } else {
-            tipStr = "动态验证码不能为空"
         }
         return tipStr
     }

@@ -30,7 +30,7 @@ class Login: NSObject {
         return "api/v2/account/login"
     }
     
-    var toParams: NSDictionary {
+    var toParams: [String : AnyObject] {
         var params = ["account":self.email.value,
                       "password":self.password.value.sha1Str(),
                       "remember_me":Bool(self.remember_me) ? "true" : "false"]

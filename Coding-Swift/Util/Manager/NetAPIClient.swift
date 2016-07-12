@@ -46,10 +46,10 @@ class NetAPIClient: NSObject {
 
 // MARK: - Router
 enum RequestMethod {
-    case Post(String, [String: AnyObject])
-    case Get(String, [String: AnyObject])
-    case Update(String, [String: AnyObject])
-    case Delete(String, [String: AnyObject])
+    case Post(String, [String: AnyObject]?)
+    case Get(String, [String: AnyObject]?)
+    case Update(String, [String: AnyObject]?)
+    case Delete(String, [String: AnyObject]?)
 }
 
 struct Router: URLRequestConvertible {
@@ -99,7 +99,7 @@ struct Router: URLRequestConvertible {
         case .Get(let param):
             return Alamofire.ParameterEncoding.URL.encode(mutableURLRequest, parameters: param.1).0
         case .Post(let param):
-            return Alamofire.ParameterEncoding.JSON.encode(mutableURLRequest, parameters: param.1).0
+            return Alamofire.ParameterEncoding.URL.encode(mutableURLRequest, parameters: param.1).0
         case .Update(let param):
             return Alamofire.ParameterEncoding.URL.encode(mutableURLRequest, parameters: param.1).0
         default:

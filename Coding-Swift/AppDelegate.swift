@@ -52,6 +52,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).last!;
     }
     
+    func setupLoginViewController() {
+        let vc = LoginViewController()
+        window?.rootViewController = vc;
+    }
+    
+    func setupTabViewController() {
+        let rootVC = RootTabViewController()
+        rootVC.tabBar.translucent = true
+        
+        window?.rootViewController = rootVC
+    }
+    
+    func setupIntroductionViewController() {
+        let vc = IntroductionViewController()
+        window?.rootViewController = vc
+    }
 }
 
 private extension AppDelegate {
@@ -62,23 +78,6 @@ private extension AppDelegate {
         let textAttributes = [NSFontAttributeName: UIFont.boldSystemFontOfSize(CGFloat(kNavTitleFontSize)),
                               NSForegroundColorAttributeName: UIColor.whiteColor()]
         navigationBarAppearance.titleTextAttributes = textAttributes
-    }
-    
-    private func setupLoginViewController() {
-        let vc = LoginViewController()
-        window?.rootViewController = vc;
-    }
-    
-    private func setupTabViewController() {
-        let rootVC = RootTabViewController()
-        rootVC.tabBar.translucent = true
-        
-        window?.rootViewController = rootVC
-    }
-    
-    private func setupIntroductionViewController() {
-        let vc = IntroductionViewController()
-        window?.rootViewController = vc
     }
     
     private func completionStartAnimationWithOptions(launchOptions: [NSObject: AnyObject]?) {

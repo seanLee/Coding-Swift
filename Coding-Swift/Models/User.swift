@@ -23,7 +23,7 @@ class User: Mappable {
     }
     
     func mapping(map: Map) {
-        print(map)
+        email    <- map["email"]
     }
     
     init() {
