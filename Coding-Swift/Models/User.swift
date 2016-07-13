@@ -23,7 +23,38 @@ class User: Mappable {
     }
     
     func mapping(map: Map) {
-        email    <- map["email"]
+        avatar      <- map["avatar"]
+        name        <- map["name"]
+        global_key  <- map["global_key"]
+        path        <- map["path"]
+        slogan      <- map["slogan"]
+        company     <- map["company"]
+        tags_str    <- map["tags_str"]
+        tags        <- map["tags"]
+        location    <- map["location"]
+        job_str     <- map["job_str"]
+        job         <- map["job"]
+        email       <- map["email"]
+        birthday    <- map["birthday"]
+        pinyinName  <- map["pinyinName"]
+        phone       <- map["phone"]
+        id          <- map["id"]
+        sex         <- map["sex"]
+        follow      <- map["follow"]
+        followed    <- map["followed"]
+        fans_count  <- map["fans_count"]
+        status      <- map["status"]
+        points_left <- map["points_left"]
+        tweets_count  <- map["tweets_count"]
+        introduction  <- map["introduction"]
+        follows_count <- map["follows_count"]
+        email_validation <- map["email_validation"]
+        is_phone_validated <- map["is_phone_validated"]
+        
+        created_at          <- (map["created_at"], MilisecondDateTransform())
+        last_logined_at     <- (map["last_logined_at"], MilisecondDateTransform())
+        last_activity_at    <- (map["last_activity_at"], MilisecondDateTransform())
+        updated_at          <- (map["updated_at"], MilisecondDateTransform())
     }
     
     init() {
@@ -38,5 +69,26 @@ class User: Mappable {
     
     func isSameToUser(user: User) -> Bool {
         return (self.id == user.id) || (self.global_key == user.global_key)
+    }
+}
+
+private class MilisecondDateTransform: TransformType {
+    typealias Object = NSDate
+    typealias JSON = Int
+    
+    init() {}
+    
+    func transformFromJSON(value: AnyObject?) -> NSDate? {
+        if let timeInt = value as? Int {
+            return NSDate(timeIntervalSince1970: NSTimeInterval(timeInt/1000))
+        }
+        return nil
+    }
+    
+    func transformToJSON(value: NSDate?) -> Int? {
+        if let date = value {
+            return Int(date.timeIntervalSince1970 * 1000)
+        }
+        return nil
     }
 }

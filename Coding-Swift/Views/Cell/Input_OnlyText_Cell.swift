@@ -28,7 +28,7 @@ class Input_OnlyText_Cell: UITableViewCell {
     }()
     
     private lazy var captchaView: UITapImageView = {
-       let tapView = UITapImageView()
+        let tapView = UITapImageView(frame: CGRectMake(kScreen_Width - 60 - kLoginPaddingLeftWidth, (44-25)/2, 60, 25))
         tapView.layer.masksToBounds = true
         tapView.layer.cornerRadius = 5.0
         tapView.addTapBlock({ (obj) in
@@ -44,7 +44,7 @@ class Input_OnlyText_Cell: UITableViewCell {
     }()
     
     private lazy var passwordBtn: UIButton = {
-        let button = UIButton()
+        let button = UIButton(frame: CGRectMake(kScreen_Width - 44.0 - kLoginPaddingLeftWidth, 0, 44.0, 44.0))
         button.setImage(UIImage(named: "password_unlook"), forState: .Normal)
         button.addTarget(self, action: #selector(passwordBtnClicked(_:)), forControlEvents: .TouchUpInside)
         return button
@@ -68,7 +68,6 @@ class Input_OnlyText_Cell: UITableViewCell {
         btn.contentHorizontalAlignment = .Right
         btn.setImage(UIImage(named: "text_clear_btn"), forState: .Normal)
         btn.addTarget(self, action: #selector(clearBtnClicked(_:)), forControlEvents: .TouchUpInside)
-        self.contentView.addSubview(btn)
         return btn
     }()
     
@@ -104,12 +103,6 @@ class Input_OnlyText_Cell: UITableViewCell {
         
         if reuseIdentifier == Input_OnlyText_Cell.kCellIdentifier_Input_OnlyText_Cell_Captcha {
             contentView.addSubview(captchaView)
-            captchaView.snp_makeConstraints(closure: { (make) in
-                make.right.equalTo(contentView).offset(-kLoginPaddingLeftWidth)
-                make.centerY.equalTo(contentView)
-                make.width.equalTo(60.0)
-                make.height.equalTo(25.0)
-            })
             
             contentView.addSubview(activityIndicator)
             activityIndicator.snp_makeConstraints(closure: { (make) in
@@ -119,11 +112,11 @@ class Input_OnlyText_Cell: UITableViewCell {
             textField.secureTextEntry = true
             
             contentView.addSubview(passwordBtn)
-            passwordBtn.snp_makeConstraints(closure: { (make) in
-                make.width.height.equalTo(44.0)
-                make.centerY.equalTo(contentView)
-                make.right.equalTo(contentView).offset(-kLoginPaddingLeftWidth)
-            })
+//            passwordBtn.snp_makeConstraints(closure: { (make) in
+//                make.width.height.equalTo(44.0)
+//                make.centerY.equalTo(contentView)
+//                make.right.equalTo(contentView).offset(-kLoginPaddingLeftWidth)
+//            })
         } else if reuseIdentifier == Input_OnlyText_Cell.kCellIdentifier_Input_OnlyText_Cell_PhoneCode_Prefix {
             contentView.addSubview(verify_codeBtn)
             verify_codeBtn.snp_makeConstraints(closure: { (make) in
@@ -185,19 +178,24 @@ class Input_OnlyText_Cell: UITableViewCell {
         super.layoutSubviews()
         
         if isForLoginVC {
-            clearBtn.snp_makeConstraints(closure: { (make) in
-                make.width.height.equalTo(30.0)
-                make.centerY.equalTo(contentView)
-                make.right.equalTo(contentView).offset(-kLoginPaddingLeftWidth)
-            })
+            if clearBtn.superview == nil {
+                self.contentView.addSubview(clearBtn)
+                clearBtn.snp_makeConstraints(closure: { (make) in
+                    make.width.height.equalTo(30.0)
+                    make.centerY.equalTo(contentView)
+                    make.right.equalTo(contentView).offset(-kLoginPaddingLeftWidth)
+                })
+            }
             
-            contentView.addSubview(lineView)
-            lineView.snp_makeConstraints(closure: { (make) in
-                make.height.equalTo(0.5)
-                make.left.equalTo(contentView).offset(kLoginPaddingLeftWidth)
-                make.right.equalTo(contentView).offset(-kLoginPaddingLeftWidth)
-                make.bottom.equalTo(contentView)
-            })
+            if lineView.superview == nil {
+                contentView.addSubview(lineView)
+                lineView.snp_makeConstraints(closure: { (make) in
+                    make.height.equalTo(0.5)
+                    make.left.equalTo(contentView).offset(kLoginPaddingLeftWidth)
+                    make.right.equalTo(contentView).offset(-kLoginPaddingLeftWidth)
+                    make.bottom.equalTo(contentView)
+                })
+            }
         }
         
         backgroundColor = isForLoginVC ? UIColor.clearColor() : UIColor.whiteColor()
@@ -219,7 +217,7 @@ class Input_OnlyText_Cell: UITableViewCell {
         
         var offset: CGFloat = 0
         if let rightElement = rightElement {
-            offset = CGRectGetMinY(rightElement.frame) - kScreen_Width - 10.0
+            offset = CGRectGetMinX(rightElement.frame) - kScreen_Width - 10.0
         } else {
             offset = -kLoginPaddingLeftWidth
         }

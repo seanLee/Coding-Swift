@@ -148,10 +148,10 @@ class LoginViewController: BaseViewController {
                     return (emailValue.length > 0 && passwordValue.length > 0)
                 }
             }
-        }
-        .map {$0.boolValue}
-        .bindTo(loginButton.rx_enabled)
-        .addDisposableTo(disposeBag)
+            }
+            .map {$0.boolValue}
+            .bindTo(loginButton.rx_enabled)
+            .addDisposableTo(disposeBag)
         
         view.transform = CGAffineTransformIdentity
         footerView.addSubview(cannotLoginButton)
@@ -296,24 +296,63 @@ class LoginViewController: BaseViewController {
                 if let strongSelf = self {
                     strongSelf.loginButton.enabled = true
                     strongSelf.activityIndicator.stopAnimating()
+                    if result != nil {
+                        Login.setPreUserEmail(strongSelf.myLogin.email.value)
+                        (UIApplication.sharedApplication().delegate as! AppDelegate).setupTabViewController()
+                        strongSelf.doSomethingAfterLogin()
+                        return
+                    }
+                    let global_key = error?.userInfo["msg"]?["two_factor_auth_code_not_empty"] as? String
+                    let activate_key = error?.userInfo["msg"]?["user_need_activate"] as? String
+                    if global_key?.length > 0 {
+                        strongSelf.changeUITo2FAWithGK(global_key!)
+                    } else if activate_key != nil {
+                        return
+                    } else {
+                        NSObject.showError(error!)
+                        strongSelf.refreshCaptchaNeeded()
+                    }
                 }
-            })
+                })
         }
     }
     
-    private func requestUnreadCount(data: [String: AnyObject]) {
-        let aPath = "api/user/unread-count"
-        let router = Router(requestMethod: RequestMethod.Get(aPath, nil))
-        NetAPIClient.sharedInstance().requestData(router) { [weak self] (result, error) in
+    // MARK: - Method
+    private func loginTipFor2FA() -> String? {
+        var tipStr: String?
+        if otpCode.value.length == 0  {
+            tipStr = "动态验证码不能为空"
+        } else {
+            if !otpCode.value.isPureInt() || otpCode.value.length != 6 {
+                tipStr = "动态验证码必须是一个6位数字"
+            }
+        }
+        return tipStr
+    }
+    
+    private func doSomethingAfterLogin() {
+        let curUser = Login.curLoginUser
+        if let user = curUser {
+            if user.email?.length > 0 && !Bool(user.email_validation!) {
+                let alertView = UIAlertView(title: "激活邮箱", message: "该邮箱尚未激活，请尽快去邮箱查收邮件并激活账号。如果在收件箱中没有看到，请留意一下垃圾邮件箱子（T_T）", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "重新激发邮件")
+                alertView.show()
+            }
+        }
+    }
+    
+    private func changeUITo2FAWithGK(key: String) {
+        
+    }
+    
+    private func refreshCaptchaNeeded() {
+        NetAPIManager.sharedInstance.request_CaptchaNeeded("api/captcha/login") { [weak self] (result, error) in
             if let strongSelf = self {
-                strongSelf.loginButton.enabled = true
-                strongSelf.activityIndicator.stopAnimating()
-                if error?.userInfo["msg"]?["user_need_activate"] != nil {
-                    
-                    return
-                } else {
-                    Login.setPreUserEmail(strongSelf.myLogin.email.value)
-                    
+                if let result = result {
+                    let value = result as? Int
+                    if let value = value {
+                        strongSelf.captchaNeeded.value = Bool(value)
+                    }
+                    strongSelf.myTableView.reloadData()
                 }
             }
         }
@@ -386,24 +425,26 @@ extension LoginViewController: UITableViewDelegate, UITableViewDataSource {
                 cell.textValueChangedBlock = { [weak self] value in
                     if let strongSelf = self {
                         strongSelf.myLogin.j_captcha.value = value
-                        print(self?.myLogin.j_captcha)
                     }
                 }
             }
         }
         return cell
     }
+}
+
+extension LoginViewController: UIAlertViewDelegate {
+    func alertView(alertView: UIAlertView, didDismissWithButtonIndex buttonIndex: Int) {
+        if buttonIndex == 1 {
+            self.sendActivateEmail();
+        }
+    }
     
-    // MARK: - Method
-    private func loginTipFor2FA() -> String? {
-        var tipStr: String?
-        if otpCode.value.length == 0  {
-            tipStr = "动态验证码不能为空"
-        } else {
-            if !otpCode.value.isPureInt() || otpCode.value.length != 6 {
-                tipStr = "动态验证码必须是一个6位数字"
+    private func sendActivateEmail() {
+        NetAPIManager.sharedInstance.request_SendActivateEmail(Login.curLoginUser!.email!) { (result, error) in
+            if result != nil  {
+                NSObject.showHudTipStr("邮件已发送")
             }
         }
-        return tipStr
     }
 }
