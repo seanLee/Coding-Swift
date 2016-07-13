@@ -98,6 +98,7 @@ class LoginViewController: BaseViewController {
         showdismissButton(showDismissButton)
         
         refreshIconUserImage()
+        refreshCaptchaNeeded()
     }
     
     

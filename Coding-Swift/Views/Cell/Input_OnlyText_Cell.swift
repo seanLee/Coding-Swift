@@ -112,11 +112,6 @@ class Input_OnlyText_Cell: UITableViewCell {
             textField.secureTextEntry = true
             
             contentView.addSubview(passwordBtn)
-//            passwordBtn.snp_makeConstraints(closure: { (make) in
-//                make.width.height.equalTo(44.0)
-//                make.centerY.equalTo(contentView)
-//                make.right.equalTo(contentView).offset(-kLoginPaddingLeftWidth)
-//            })
         } else if reuseIdentifier == Input_OnlyText_Cell.kCellIdentifier_Input_OnlyText_Cell_PhoneCode_Prefix {
             contentView.addSubview(verify_codeBtn)
             verify_codeBtn.snp_makeConstraints(closure: { (make) in
@@ -209,6 +204,7 @@ class Input_OnlyText_Cell: UITableViewCell {
             rightElement = nil
         } else if reuseIdentifier == Input_OnlyText_Cell.kCellIdentifier_Input_OnlyText_Cell_Captcha {
             rightElement = captchaView
+            refreshCaptchaImage()
         } else if reuseIdentifier == Input_OnlyText_Cell.kCellIdentifier_Input_OnlyText_Cell_Password {
             rightElement = passwordBtn
         } else if reuseIdentifier == Input_OnlyText_Cell.kCellIdentifier_Input_OnlyText_Cell_PhoneCode_Prefix {
@@ -279,6 +275,15 @@ class Input_OnlyText_Cell: UITableViewCell {
     
     // MARK: - Action
     private func refreshCaptchaImage() {
-        
+        if activityIndicator.isAnimating() {
+            return
+        }
+        activityIndicator.startAnimating()
+        let url = NSURL(string: "\(baseUrl)api/getCaptcha")!
+        captchaView.sd_setImageWithURL(url, placeholderImage: UIImage.imageWithColor(UIColor.lightGrayColor()), options: [.RetryFailed, .RefreshCached, .HandleCookies]) { [weak self] (image, error, cacheType, imageUrl) in
+            if let strongSelf = self {
+                strongSelf.activityIndicator.stopAnimating()
+            }
+        }
     }
 }
