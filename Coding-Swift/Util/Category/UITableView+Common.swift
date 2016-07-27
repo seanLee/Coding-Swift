@@ -13,7 +13,7 @@ extension UITableView {
     func addLineforPlainCell(cell: UITableViewCell, indexPath: NSIndexPath, leftSpace: CGFloat, hasSectionLine: Bool) {
         let layer = CAShapeLayer()
         
-        var path = CGPathCreateMutable()
+        let path = CGPathCreateMutable()
         
         let bounds = CGRectInset(cell.bounds, 0, 0)
         
