@@ -59,7 +59,7 @@ class APParallaxView: UIView {
         self.addSubview(imageView)
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[imageView]|", options: [], metrics: nil, views: ["imageView":self.imageView]))
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[imageView]|", options: [], metrics: nil, views: ["imageView":self.imageView]))
-        
+
         if shadow {
             self.addSubview(shadowView)
             self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[shadowView(8.0)]|", options: [.AlignAllBottom], metrics: nil, views: ["shadowView":shadowView]))
@@ -114,7 +114,7 @@ class APParallaxView: UIView {
         if let keyPath = keyPath {
             if keyPath == "contentOffset" {
                 if let value = change?[NSKeyValueChangeNewKey] {
-                    self.scrollViewDidScroll(value as! CGPoint)
+                    self.scrollViewDidScroll((value as! NSValue).CGPointValue())
                 }
             } else if keyPath == "frame" {
                 layoutSubviews()
@@ -136,6 +136,7 @@ class APParallaxView: UIView {
             }
             
             frame = CGRectMake(0, contentOffset.y, CGRectGetWidth(frame), yOffset)
+            print(self)
             
             if let didChangeFrameBlock = parallaxViewDidChangeFrameBlock {
                 didChangeFrameBlock(self, self.frame)
@@ -177,7 +178,7 @@ extension UIScrollView {
     private var showsParallax: Bool {
         set {
             if let parallaxView = parallaxView {
-                parallaxView.hidden = newValue
+                parallaxView.hidden = !newValue
                 if newValue {
                     if !parallaxView.isObserving {
                         addObserver(parallaxView, forKeyPath: "contentOffset", options: .New, context: nil)
@@ -250,7 +251,7 @@ extension UIScrollView {
             view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
             parallaxView.setCustomView(view)
         } else {
-            let parallaxView = APParallaxView(frame: CGRectMake(0, 0, self.bounds.size.width*2, height), shadow: shadow)
+            let parallaxView = APParallaxView(frame: CGRectMake(0, 0, self.bounds.size.width, height), shadow: shadow)
             parallaxView.clipsToBounds = true
             parallaxView.scrollView = self
             parallaxView.parallaxHeight = height

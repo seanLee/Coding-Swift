@@ -547,11 +547,11 @@
 		AD2C77591D47681500C47491 /* UserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD2C77581D47681500C47491 /* UserInfoViewController.swift */; };
 		AD4A0D9A1D29F950002534A4 /* UITableView+Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4A0D991D29F950002534A4 /* UITableView+Common.swift */; };
 		AD4B09851D26790600EF688D /* EaseInputTipsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4B09841D26790600EF688D /* EaseInputTipsView.swift */; };
+		AD70E1B21D504B36004DC2CE /* UIScrollView+APParallaxHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD70E1B11D504B36004DC2CE /* UIScrollView+APParallaxHeader.swift */; };
 		AD773B691D34EABE008F4675 /* NetAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD773B681D34EABE008F4675 /* NetAPIManager.swift */; };
 		AD773B6B1D34EADC008F4675 /* NetAPIManager+Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD773B6A1D34EADC008F4675 /* NetAPIManager+Login.swift */; };
 		AD7E128C1D227A9A00624471 /* Login2FATipCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD7E128B1D227A9A00624471 /* Login2FATipCell.swift */; };
 		AD96CB0F1D23C1B500054B5C /* UIButton+Bootstrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD96CB0E1D23C1B500054B5C /* UIButton+Bootstrap.swift */; };
-		ADA701591D484CC100BFF169 /* UIScrollView+APParallaxHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADA701581D484CC100BFF169 /* UIScrollView+APParallaxHeader.swift */; };
 		ADD8818D1D0D133D0008B32E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD8818C1D0D133D0008B32E /* LoginViewController.swift */; };
 		ADD881901D0D14D60008B32E /* Input_OnlyText_Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD8818F1D0D14D60008B32E /* Input_OnlyText_Cell.swift */; };
 		ADD881931D0D163B0008B32E /* UITapImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD881921D0D163B0008B32E /* UITapImageView.swift */; };
@@ -1106,11 +1106,11 @@
 		AD2C77581D47681500C47491 /* UserInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfoViewController.swift; sourceTree = "<group>"; };
 		AD4A0D991D29F950002534A4 /* UITableView+Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+Common.swift"; sourceTree = "<group>"; };
 		AD4B09841D26790600EF688D /* EaseInputTipsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EaseInputTipsView.swift; sourceTree = "<group>"; };
+		AD70E1B11D504B36004DC2CE /* UIScrollView+APParallaxHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScrollView+APParallaxHeader.swift"; sourceTree = "<group>"; };
 		AD773B681D34EABE008F4675 /* NetAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetAPIManager.swift; sourceTree = "<group>"; };
 		AD773B6A1D34EADC008F4675 /* NetAPIManager+Login.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NetAPIManager+Login.swift"; sourceTree = "<group>"; };
 		AD7E128B1D227A9A00624471 /* Login2FATipCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Login2FATipCell.swift; sourceTree = "<group>"; };
 		AD96CB0E1D23C1B500054B5C /* UIButton+Bootstrap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+Bootstrap.swift"; sourceTree = "<group>"; };
-		ADA701581D484CC100BFF169 /* UIScrollView+APParallaxHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScrollView+APParallaxHeader.swift"; sourceTree = "<group>"; };
 		ADD8818C1D0D133D0008B32E /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		ADD8818F1D0D14D60008B32E /* Input_OnlyText_Cell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Input_OnlyText_Cell.swift; sourceTree = "<group>"; };
 		ADD881921D0D163B0008B32E /* UITapImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITapImageView.swift; sourceTree = "<group>"; };
@@ -2085,7 +2085,7 @@
 				AD96CB0E1D23C1B500054B5C /* UIButton+Bootstrap.swift */,
 				AD27AC911D0150A700B52C38 /* UIViewController+Swizzle.swift */,
 				AD4A0D991D29F950002534A4 /* UITableView+Common.swift */,
-				ADA701581D484CC100BFF169 /* UIScrollView+APParallaxHeader.swift */,
+				AD70E1B11D504B36004DC2CE /* UIScrollView+APParallaxHeader.swift */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -2833,7 +2833,7 @@
 				AD4A0D9A1D29F950002534A4 /* UITableView+Common.swift in Sources */,
 				AD27AEAB1D0150A700B52C38 /* NSURL+Common.swift in Sources */,
 				AD7E128C1D227A9A00624471 /* Login2FATipCell.swift in Sources */,
-				ADA701591D484CC100BFF169 /* UIScrollView+APParallaxHeader.swift in Sources */,
+				AD70E1B21D504B36004DC2CE /* UIScrollView+APParallaxHeader.swift in Sources */,
 				AD27AEAE1D0150A700B52C38 /* UIImage+Common.swift in Sources */,
 				AD29FC7D1D10F55000AF1FC4 /* UIImage+ImageEffects.swift in Sources */,
 				AD27AEB31D0150A700B52C38 /* FunctionTipsManager.swift in Sources */,
