@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         window = UIWindow.init(frame: UIScreen.mainScreen().bounds)
         window?.backgroundColor = UIColor.whiteColor()
-        
+        //Test
         //Network
         let reachabilityManager = NetworkReachabilityManager()
         reachabilityManager?.startListening();
